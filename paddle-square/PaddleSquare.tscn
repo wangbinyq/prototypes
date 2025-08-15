@@ -1,0 +1,62 @@
+[gd_scene load_steps=5 format=3 uid="uid://br4d3b1ls0oab"]
+
+[ext_resource type="PackedScene" uid="uid://du0aoxpxyms7g" path="res://paddle-square/paddle.tscn" id="1_5ebhm"]
+[ext_resource type="Script" uid="uid://dhu75hx4238ge" path="res://paddle-square/PaddleGame.gd" id="1_vsrrr"]
+[ext_resource type="PackedScene" uid="uid://bt15cm6o3d4ca" path="res://paddle-square/ball.tscn" id="2_j8bx3"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5x6pi"]
+albedo_color = Color(0.501961, 0.501961, 0.501961, 1)
+
+[node name="PaddleSquare" type="Node3D" node_paths=PackedStringArray("ball")]
+script = ExtResource("1_vsrrr")
+ball = NodePath("Ball")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.149535, -0.661607, 0.734789, 0, 0.743145, 0.669131, -0.988756, -0.100059, 0.111126, 0, 0, 0)
+shadow_enabled = true
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
+material_override = SubResource("StandardMaterial3D_5x6pi")
+
+[node name="Bottom" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10.5)
+size = Vector3(20, 1, 1)
+
+[node name="Top" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10.5)
+size = Vector3(20, 1, 1)
+
+[node name="Left" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.5, 0, 0)
+size = Vector3(1, 1, 20)
+
+[node name="Right" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, 0, 0)
+size = Vector3(1, 1, 20)
+
+[node name="TopLeft" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.5, 0.5, -10.5)
+size = Vector3(2, 1, 2)
+
+[node name="TopRight" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, 0.5, -10.5)
+size = Vector3(2, 1, 2)
+
+[node name="BottomLeft" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.5, 0.5, 10.5)
+size = Vector3(2, 1, 2)
+
+[node name="BottomRight" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, 0.5, 10.5)
+size = Vector3(2, 1, 2)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 33.686, 0)
+
+[node name="PaddleTop" parent="." instance=ExtResource("1_5ebhm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10.5)
+
+[node name="PaddleBottom" parent="." instance=ExtResource("1_5ebhm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10.5)
+
+[node name="Ball" parent="." instance=ExtResource("2_j8bx3")]

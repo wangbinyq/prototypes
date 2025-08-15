@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://du0aoxpxyms7g"]
+
+[ext_resource type="Script" uid="uid://l7an6dr0v3ls" path="res://paddle-square/paddle.gd" id="1_vmcft"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_mpvc0"]
+size = Vector3(8, 1.1, 1.1)
+
+[node name="PaddleTop" type="MeshInstance3D"]
+mesh = SubResource("BoxMesh_mpvc0")
+script = ExtResource("1_vmcft")
