@@ -1,12 +1,16 @@
 extends Node3D
 
 @export var ball: Ball
+@export var top_paddle: Paddle
+@export var bottom_paddle: Paddle
 @export var arena_extents := Vector2(10, 10)
 
 func _ready():
 	ball.start_new_game()
 
 func _process(delta: float):
+	top_paddle.move(ball.pos.x, arena_extents.x, delta)
+	bottom_paddle.move(ball.pos.y, arena_extents.y, delta)
 	ball.move(delta)
 	bouncey_if_needed()
 	bouncex_if_needed()
