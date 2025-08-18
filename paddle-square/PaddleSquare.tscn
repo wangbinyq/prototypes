@@ -55,12 +55,14 @@ size = Vector3(2, 1, 2)
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 33.686, 0)
 
-[node name="TopPaddle" parent="." instance=ExtResource("1_5ebhm")]
+[node name="TopPaddle" parent="." node_paths=PackedStringArray("score_text") instance=ExtResource("1_5ebhm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10.5)
 is_ai = true
+score_text = NodePath("../TopScore")
 
-[node name="BottomPaddle" parent="." instance=ExtResource("1_5ebhm")]
+[node name="BottomPaddle" parent="." node_paths=PackedStringArray("score_text") instance=ExtResource("1_5ebhm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10.5)
+score_text = NodePath("../BottomScore")
 
 [node name="Ball" parent="." instance=ExtResource("2_j8bx3")]
 

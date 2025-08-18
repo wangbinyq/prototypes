@@ -4,6 +4,9 @@ extends MeshInstance3D
 @export var is_ai := false
 @export_range(0, 100) var extents := 4.0
 @export_range(0, 100) var speed := 10.0
+@export var score_text: Label3D
+
+var score := 0
 
 func move(target: float, arena_extents: float, delta: float):
 	var px = adjust_by_ai(position.x, target, delta) if is_ai else adjust_by_player(position.x, delta)
@@ -31,3 +34,14 @@ func hit_ball(ball_x: float, ball_extents: float) -> HitResult:
 	result.hit_factor = (ball_x - position.x) / (extents + ball_extents)
 	result.hit = abs(result.hit_factor) < 1.0
 	return result
+
+func set_score(s: int):
+	self.score = s
+	score_text.text = str(s)
+
+func start_new_game():
+	set_score(0)
+
+func score_point(points_to_win: int) -> bool:
+	set_score(score + 1)
+	return score >= points_to_win
