@@ -10,6 +10,7 @@ extends MeshInstance3D
 @export var bounce_particle_emission := 20
 @export var start_particle: GPUParticles3D
 @export var start_particle_emission := 100
+@export var trail_particle: GPUParticles3D
 
 var pos: Vector2
 var velocity: Vector2
@@ -19,6 +20,7 @@ func _ready() -> void:
 
 func update_visualization():
 	position = Vector3(pos.x, 0, -pos.y)
+	trail_particle.position = Vector3(pos.x, 0, -pos.y)
 
 func move(delta: float):
 	pos += velocity * delta
@@ -43,10 +45,12 @@ func start_new_game():
 	show()
 	start_particle.amount = start_particle_emission
 	start_particle.restart()
+	set_trail_emission(true)
 
 func end_game():
 	pos.x = 0
 	hide()
+	set_trail_emission(false)
 
 func set_x_position_and_speed(start: float, speed_factor: float, delta: float):
 	velocity.x = speed_factor * max_x_speed
@@ -57,3 +61,6 @@ func emit_bounce_particle(x: float, y: float, r: float):
 	bounce_particle.rotation = Vector3(0, 0, r)
 	bounce_particle.amount = bounce_particle_emission
 	bounce_particle.restart()
+
+func set_trail_emission(enabled: bool):
+	trail_particle.emitting = enabled

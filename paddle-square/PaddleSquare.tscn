@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://br4d3b1ls0oab"]
+[gd_scene load_steps=21 format=3 uid="uid://br4d3b1ls0oab"]
 
 [ext_resource type="PackedScene" uid="uid://du0aoxpxyms7g" path="res://paddle-square/paddle.tscn" id="1_5ebhm"]
 [ext_resource type="Script" uid="uid://dhu75hx4238ge" path="res://paddle-square/PaddleGame.gd" id="1_vsrrr"]
@@ -79,6 +79,17 @@ scale_max = 0.5
 scale_curve = SubResource("CurveTexture_0diqx")
 color_ramp = SubResource("GradientTexture1D_0diqx")
 
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_uingb"]
+lifetime_randomness = 0.11
+emission_shape = 3
+emission_box_extents = Vector3(1, 1, 1)
+spread = 180.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.5
+scale_max = 0.5
+scale_curve = SubResource("CurveTexture_0diqx")
+color_ramp = SubResource("GradientTexture1D_0diqx")
+
 [node name="PaddleSquare" type="Node3D" node_paths=PackedStringArray("ball", "top_paddle", "bottom_paddle", "countdown_text", "lively_camera")]
 script = ExtResource("1_vsrrr")
 ball = NodePath("Ball")
@@ -146,11 +157,12 @@ min_extents = 1.0
 max_extents = 1.0
 score_text = NodePath("../BottomScore")
 
-[node name="Ball" type="MeshInstance3D" parent="." node_paths=PackedStringArray("bounce_particle", "start_particle")]
+[node name="Ball" type="MeshInstance3D" parent="." node_paths=PackedStringArray("bounce_particle", "start_particle", "trail_particle")]
 mesh = SubResource("BoxMesh_j8bx3")
 script = ExtResource("3_vsrrr")
 bounce_particle = NodePath("../Bounce Particle")
 start_particle = NodePath("../Start Particle")
+trail_particle = NodePath("../Trail Particle")
 
 [node name="OmniLight3D" type="OmniLight3D" parent="Ball"]
 light_color = Color(1, 1, 0, 1)
@@ -192,4 +204,11 @@ amount = 100
 one_shot = true
 explosiveness = 1.0
 process_material = SubResource("ParticleProcessMaterial_0diqx")
+draw_pass_1 = SubResource("BoxMesh_or8g8")
+
+[node name="Trail Particle" type="GPUParticles3D" parent="."]
+emitting = false
+amount = 20
+lifetime = 1.13
+process_material = SubResource("ParticleProcessMaterial_uingb")
 draw_pass_1 = SubResource("BoxMesh_or8g8")
