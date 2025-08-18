@@ -2,11 +2,15 @@ class_name Paddle
 extends MeshInstance3D
 
 @export var is_ai := false
-@export_range(0, 100) var extents := 4.0
+@export_range(0, 100) var min_extents := 4.0
+@export_range(0, 100) var max_extents := 4.0
 @export_range(0, 100) var speed := 10.0
+@export_range(0, 100) var max_targeting_bias := 0.75
 @export var score_text: Label3D
 
+var extents := 0.0
 var score := 0
+var targeting_bias := 0.0
 
 func move(target: float, arena_extents: float, delta: float):
 	var px = adjust_by_ai(position.x, target, delta) if is_ai else adjust_by_player(position.x, delta)
@@ -15,6 +19,7 @@ func move(target: float, arena_extents: float, delta: float):
 	position.x = px
 
 func adjust_by_ai(x: float, target: float, delta: float):
+	target += targeting_bias * extents
 	if x < target:
 		return minf(x + speed * delta, target)
 	return maxf(x - speed * delta, target)
@@ -30,6 +35,7 @@ class HitResult:
 	var hit_factor: float
 
 func hit_ball(ball_x: float, ball_extents: float) -> HitResult:
+	change_targeting_bias()
 	var result = HitResult.new()
 	result.hit_factor = (ball_x - position.x) / (extents + ball_extents)
 	result.hit = abs(result.hit_factor) < 1.0
@@ -41,7 +47,15 @@ func set_score(s: int):
 
 func start_new_game():
 	set_score(0)
+	change_targeting_bias()
 
 func score_point(points_to_win: int) -> bool:
 	set_score(score + 1)
 	return score >= points_to_win
+
+func change_targeting_bias():
+	targeting_bias = randf_range(-max_targeting_bias, max_targeting_bias)
+
+func set_extents(new_extents: float):
+	extents = new_extents
+	scale.x = 2 * new_extents

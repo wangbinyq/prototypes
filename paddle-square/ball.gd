@@ -1,10 +1,11 @@
 class_name Ball
 extends MeshInstance3D
 
-@export_range(0, 100) var max_x_speed: float = 20.0
-@export_range(0, 100) var start_x_speed: float = 8.0
-@export_range(0, 100) var constant_y_speed: float = 10.0
-@export_range(0, 100) var extents: float = 0.5
+@export_range(0, 100) var max_x_speed := 20.0
+@export_range(0, 100) var max_start_x_speed := 2.0
+@export_range(0, 100) var start_x_speed := 8.0
+@export_range(0, 100) var constant_y_speed := 10.0
+@export_range(0, 100) var extents := 0.5
 
 var pos: Vector2
 var velocity: Vector2
@@ -29,7 +30,8 @@ func bounce_y(boundary: float):
 func start_new_game():
     pos = Vector2(0, 0)
     update_visualization()
-    velocity = Vector2(start_x_speed, constant_y_speed)
+    velocity.x = randf_range(-max_start_x_speed, max_start_x_speed)
+    velocity.y = - constant_y_speed
     show()
 
 func end_game():
