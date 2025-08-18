@@ -5,9 +5,13 @@ extends Node3D
 @export var bottom_paddle: Paddle
 @export var arena_extents := Vector2(10, 10)
 @export_range(2, 100) var points_to_win := 3
+@export var countdown_text: Label3D
+@export_range(1, 100) var new_game_delay := 3.0
+
+var countdown_until_new_game := 0.0
 
 func _ready():
-	start_new_game()
+	countdown_until_new_game = new_game_delay
 
 func start_new_game():
 	ball.start_new_game()
@@ -17,10 +21,27 @@ func start_new_game():
 func _process(delta: float):
 	top_paddle.move(ball.pos.x, arena_extents.x, delta)
 	bottom_paddle.move(ball.pos.y, arena_extents.y, delta)
+	if countdown_until_new_game <= 0:
+		update_game(delta)
+	else:
+		update_countdown(delta)
+
+
+func update_game(delta: float):
 	ball.move(delta)
 	bouncey_if_needed()
 	bouncex_if_needed(ball.pos.x)
 	ball.update_visualization()
+
+func update_countdown(delta: float):
+	countdown_until_new_game -= delta
+	if countdown_until_new_game <= 0.0:
+		countdown_text.hide()
+		start_new_game()
+	else:
+		var display_value = int(countdown_until_new_game)
+		if display_value < new_game_delay:
+			countdown_text.text = str(display_value)
 
 func bouncey_if_needed():
 	var y_extents = arena_extents.y - ball.extents
@@ -41,7 +62,7 @@ func bounce_y(boundary: float, defender: Paddle, attacker: Paddle):
 	if hit.hit:
 		ball.set_x_position_and_speed(bounce_x, hit.hit_factor, duration_after_bounce)
 	elif attacker.score_point(points_to_win):
-		start_new_game()
+		end_game()
 
 func bouncex_if_needed(x: float):
 	var x_extents = arena_extents.x - ball.extents
@@ -50,3 +71,9 @@ func bouncex_if_needed(x: float):
 		ball.bounce_x(-x_extents)
 	elif x > x_extents:
 		ball.bounce_x(x_extents)
+
+func end_game():
+	countdown_until_new_game = new_game_delay
+	countdown_text.set_text('GAME OVER')
+	countdown_text.show()
+	ball.end_game()

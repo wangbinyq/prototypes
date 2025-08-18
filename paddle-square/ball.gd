@@ -9,6 +9,9 @@ extends MeshInstance3D
 var pos: Vector2
 var velocity: Vector2
 
+func _ready() -> void:
+    hide()
+
 func update_visualization():
     position = Vector3(pos.x, 0, -pos.y)
 
@@ -27,6 +30,11 @@ func start_new_game():
     pos = Vector2(0, 0)
     update_visualization()
     velocity = Vector2(start_x_speed, constant_y_speed)
+    show()
+
+func end_game():
+    pos.x = 0
+    hide()
 
 func set_x_position_and_speed(start: float, speed_factor: float, delta: float):
     velocity.x = speed_factor * max_x_speed

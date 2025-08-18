@@ -7,11 +7,12 @@
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5x6pi"]
 albedo_color = Color(0.501961, 0.501961, 0.501961, 1)
 
-[node name="PaddleSquare" type="Node3D" node_paths=PackedStringArray("ball", "top_paddle", "bottom_paddle")]
+[node name="PaddleSquare" type="Node3D" node_paths=PackedStringArray("ball", "top_paddle", "bottom_paddle", "countdown_text")]
 script = ExtResource("1_vsrrr")
 ball = NodePath("Ball")
 top_paddle = NodePath("TopPaddle")
 bottom_paddle = NodePath("BottomPaddle")
+countdown_text = NodePath("Countdown")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.149535, -0.661607, 0.734789, 0, 0.743145, 0.669131, -0.988756, -0.100059, 0.111126, 0, 0, 0)
@@ -68,14 +69,20 @@ score_text = NodePath("../BottomScore")
 
 [node name="TopScore" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, -5)
-pixel_size = 0.05
+pixel_size = 0.08
 text = "0"
 font_size = 72
 outline_size = 0
 
 [node name="BottomScore" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 5)
-pixel_size = 0.05
+pixel_size = 0.08
 text = "0"
 font_size = 72
+outline_size = 0
+
+[node name="Countdown" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+pixel_size = 0.08
+text = "GET READY"
 outline_size = 0
