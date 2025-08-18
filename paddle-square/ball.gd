@@ -1,8 +1,9 @@
 class_name Ball
 extends MeshInstance3D
 
-@export_range(0, 100) var x_speed: float = 8.0
-@export_range(0, 100) var y_speed: float = 10.0
+@export_range(0, 100) var max_x_speed: float = 20.0
+@export_range(0, 100) var start_x_speed: float = 8.0
+@export_range(0, 100) var constant_y_speed: float = 10.0
 @export_range(0, 100) var extents: float = 0.5
 
 var pos: Vector2
@@ -25,4 +26,8 @@ func bounce_y(boundary: float):
 func start_new_game():
     pos = Vector2(0, 0)
     update_visualization()
-    velocity = Vector2(x_speed, y_speed)
+    velocity = Vector2(start_x_speed, constant_y_speed)
+
+func set_x_position_and_speed(start: float, speed_factor: float, delta: float):
+    velocity.x = speed_factor * max_x_speed
+    pos.x = start + velocity.x * delta
