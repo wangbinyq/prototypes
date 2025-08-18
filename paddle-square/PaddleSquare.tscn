@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://dhu75hx4238ge" path="res://paddle-square/PaddleGame.gd" id="1_vsrrr"]
 [ext_resource type="Script" uid="uid://cdbba57331gle" path="res://paddle-square/lively_camera.gd" id="2_mgiss"]
 [ext_resource type="Script" uid="uid://dgu67686ntv18" path="res://paddle-square/ball.gd" id="3_vsrrr"]
-[ext_resource type="Shader" uid="uid://bhv14oygvdg33" path="res://paddle-square/bounce-particles.tres" id="5_0diqx"]
+[ext_resource type="Shader" uid="uid://do4c0xg3hgqqx" path="res://paddle-square/bounce-particles.tres" id="5_0diqx"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_mgiss"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -154,7 +154,6 @@ score_text = NodePath("../TopScore")
 [node name="BottomPaddle" parent="." node_paths=PackedStringArray("score_text") instance=ExtResource("1_5ebhm")]
 transform = Transform3D(8, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10.5)
 min_extents = 1.0
-max_extents = 1.0
 score_text = NodePath("../BottomScore")
 
 [node name="Ball" type="MeshInstance3D" parent="." node_paths=PackedStringArray("bounce_particle", "start_particle", "trail_particle")]

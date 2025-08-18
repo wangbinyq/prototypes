@@ -1,0 +1,113 @@
+[gd_resource type="VisualShader" load_steps=10 format=3 uid="uid://bhv14oygvdg33"]
+
+[sub_resource type="VisualShaderNodeFloatConstant" id="VisualShaderNodeFloatConstant_mt5jr"]
+constant = 0.5
+
+[sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_mt5jr"]
+parameter_name = "BaseColor"
+default_value_enabled = true
+
+[sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_5wuxw"]
+parameter_name = "TimeOfLastHit"
+default_value_enabled = true
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_2gbwp"]
+input_name = "time"
+
+[sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_mfrmk"]
+operator = 1
+
+[sub_resource type="VisualShaderNodeFloatFunc" id="VisualShaderNodeFloatFunc_qp5q2"]
+function = 31
+
+[sub_resource type="VisualShaderNodeFloatFunc" id="VisualShaderNodeFloatFunc_m3jk1"]
+function = 18
+
+[sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_1ggaj"]
+default_input_values = [0, Quaternion(0, 0, 0, 0), 1, Quaternion(0, 0, 0, 0)]
+op_type = 2
+operator = 2
+
+[sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_ddy03"]
+parameter_name = "EmissionColor"
+default_value_enabled = true
+default_value = Color(10, 10, 0, 1)
+
+[resource]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx, unshaded;
+
+uniform vec4 BaseColor : source_color = vec4(1.000000, 1.000000, 1.000000, 1.000000);
+uniform float TimeOfLastHit = 0.0;
+uniform vec4 EmissionColor : source_color = vec4(10.000000, 10.000000, 0.000000, 1.000000);
+
+
+
+void fragment() {
+// ColorParameter:2
+	vec4 n_out2p0 = BaseColor;
+
+
+// FloatConstant:10
+	float n_out10p0 = 0.500000;
+
+
+// Input:4
+	float n_out4p0 = TIME;
+
+
+// FloatParameter:3
+	float n_out3p0 = TimeOfLastHit;
+
+
+// FloatOp:5
+	float n_out5p0 = n_out4p0 - n_out3p0;
+
+
+// FloatFunc:6
+	float n_out6p0 = 1.0 - n_out5p0;
+
+
+// FloatFunc:7
+	float n_out7p0 = min(max(n_out6p0, 0.0), 1.0);
+
+
+// ColorParameter:9
+	vec4 n_out9p0 = EmissionColor;
+
+
+// VectorOp:8
+	vec4 n_out8p0 = vec4(n_out7p0) * n_out9p0;
+
+
+// Output:0
+	ALBEDO = vec3(n_out2p0.xyz);
+	ROUGHNESS = n_out10p0;
+	EMISSION = vec3(n_out8p0.xyz);
+
+
+}
+"
+flags/unshaded = true
+preview_params/EmissionColor = "Color(10, 10, 0, 1)"
+nodes/vertex/0/position = Vector2(300, 140)
+nodes/fragment/0/position = Vector2(180, 20)
+nodes/fragment/2/node = SubResource("VisualShaderNodeColorParameter_mt5jr")
+nodes/fragment/2/position = Vector2(-160, -100)
+nodes/fragment/3/node = SubResource("VisualShaderNodeFloatParameter_5wuxw")
+nodes/fragment/3/position = Vector2(-740, 280)
+nodes/fragment/4/node = SubResource("VisualShaderNodeInput_2gbwp")
+nodes/fragment/4/position = Vector2(-740, 160)
+nodes/fragment/5/node = SubResource("VisualShaderNodeFloatOp_mfrmk")
+nodes/fragment/5/position = Vector2(-460, 180)
+nodes/fragment/6/node = SubResource("VisualShaderNodeFloatFunc_qp5q2")
+nodes/fragment/6/position = Vector2(-460, 360)
+nodes/fragment/7/node = SubResource("VisualShaderNodeFloatFunc_m3jk1")
+nodes/fragment/7/position = Vector2(-460, 460)
+nodes/fragment/8/node = SubResource("VisualShaderNodeVectorOp_1ggaj")
+nodes/fragment/8/position = Vector2(-180, 420)
+nodes/fragment/9/node = SubResource("VisualShaderNodeColorParameter_ddy03")
+nodes/fragment/9/position = Vector2(-520, 580)
+nodes/fragment/10/node = SubResource("VisualShaderNodeFloatConstant_mt5jr")
+nodes/fragment/10/position = Vector2(-160, 160)
+nodes/fragment/connections = PackedInt32Array(4, 0, 5, 0, 3, 0, 5, 1, 5, 0, 6, 0, 6, 0, 7, 0, 7, 0, 8, 0, 9, 0, 8, 1, 8, 0, 0, 5, 10, 0, 0, 3, 2, 0, 0, 0)

@@ -1,4 +1,4 @@
-[gd_resource type="VisualShader" load_steps=4 format=3 uid="uid://bhv14oygvdg33"]
+[gd_resource type="VisualShader" load_steps=4 format=3 uid="uid://do4c0xg3hgqqx"]
 
 [sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_mt5jr"]
 parameter_name = "Intensity"

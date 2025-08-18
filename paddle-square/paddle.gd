@@ -11,6 +11,13 @@ extends MeshInstance3D
 var extents := 0.0
 var score := 0
 var targeting_bias := 0.0
+var paddle_material: ShaderMaterial
+
+var time_of_last_hit_id = 'TimeOfLastHit'
+
+func _ready() -> void:
+	paddle_material = mesh.surface_get_material(0).duplicate() as ShaderMaterial
+	set_surface_override_material(0, paddle_material)
 
 func move(target: float, arena_extents: float, delta: float):
 	var px = adjust_by_ai(position.x, target, delta) if is_ai else adjust_by_player(position.x, delta)
@@ -39,6 +46,8 @@ func hit_ball(ball_x: float, ball_extents: float) -> HitResult:
 	var result = HitResult.new()
 	result.hit_factor = (ball_x - position.x) / (extents + ball_extents)
 	result.hit = abs(result.hit_factor) < 1.0
+	if result.hit:
+		paddle_material.set_shader_parameter(time_of_last_hit_id, Time.get_ticks_msec() / 1000.0)
 	return result
 
 func set_score(s: int, points_to_win: int = 1000):

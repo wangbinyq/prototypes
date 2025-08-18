@@ -1,11 +1,17 @@
-[gd_scene load_steps=4 format=3 uid="uid://du0aoxpxyms7g"]
+[gd_scene load_steps=5 format=3 uid="uid://du0aoxpxyms7g"]
 
+[ext_resource type="Shader" uid="uid://bhv14oygvdg33" path="res://paddle-square/reactive-surface.tres" id="1_jxsfc"]
 [ext_resource type="Script" uid="uid://l7an6dr0v3ls" path="res://paddle-square/paddle.gd" id="1_vmcft"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vmcft"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rymce"]
+render_priority = 0
+shader = ExtResource("1_jxsfc")
+shader_parameter/BaseColor = Color(1, 1, 1, 1)
+shader_parameter/TimeOfLastHit = 0.0
+shader_parameter/EmissionColor = Color(10, 10, 0, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_mpvc0"]
-material = SubResource("StandardMaterial3D_vmcft")
+material = SubResource("ShaderMaterial_rymce")
 size = Vector3(1, 1.1, 1.1)
 
 [node name="PaddleTop" type="MeshInstance3D"]
