@@ -1,9 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://bt15cm6o3d4ca"]
+[gd_scene load_steps=4 format=3 uid="uid://cy4arycwqh8wq"]
 
 [ext_resource type="Script" uid="uid://dgu67686ntv18" path="res://paddle-square/ball.gd" id="1_hd5hd"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5ebhm"]
-albedo_color = Color(1, 1, 0, 1)
+shading_mode = 0
+albedo_color = Color(2, 2, 0, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_j8bx3"]
 material = SubResource("StandardMaterial3D_5ebhm")

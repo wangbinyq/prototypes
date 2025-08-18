@@ -1,12 +1,69 @@
-[gd_scene load_steps=6 format=3 uid="uid://br4d3b1ls0oab"]
+[gd_scene load_steps=19 format=3 uid="uid://br4d3b1ls0oab"]
 
 [ext_resource type="PackedScene" uid="uid://du0aoxpxyms7g" path="res://paddle-square/paddle.tscn" id="1_5ebhm"]
 [ext_resource type="Script" uid="uid://dhu75hx4238ge" path="res://paddle-square/PaddleGame.gd" id="1_vsrrr"]
-[ext_resource type="PackedScene" uid="uid://bt15cm6o3d4ca" path="res://paddle-square/ball.tscn" id="2_j8bx3"]
 [ext_resource type="Script" uid="uid://cdbba57331gle" path="res://paddle-square/lively_camera.gd" id="2_mgiss"]
+[ext_resource type="Script" uid="uid://dgu67686ntv18" path="res://paddle-square/ball.gd" id="3_vsrrr"]
+[ext_resource type="Shader" uid="uid://bhv14oygvdg33" path="res://paddle-square/bounce-particles.tres" id="5_0diqx"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_mgiss"]
+sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+
+[sub_resource type="Sky" id="Sky_0diqx"]
+sky_material = SubResource("ProceduralSkyMaterial_mgiss")
+
+[sub_resource type="Environment" id="Environment_or8g8"]
+background_mode = 2
+sky = SubResource("Sky_0diqx")
+tonemap_mode = 3
+glow_enabled = true
+glow_blend_mode = 1
+glow_hdr_threshold = 2.5
+glow_hdr_scale = 4.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5x6pi"]
 albedo_color = Color(0.501961, 0.501961, 0.501961, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5ebhm"]
+shading_mode = 0
+albedo_color = Color(2, 2, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_j8bx3"]
+material = SubResource("StandardMaterial3D_5ebhm")
+
+[sub_resource type="Gradient" id="Gradient_mgiss"]
+offsets = PackedFloat32Array(0, 0.106383, 1)
+colors = PackedColorArray(1, 1, 0, 0, 1, 0.894, 0, 1, 1, 0, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_0diqx"]
+gradient = SubResource("Gradient_mgiss")
+
+[sub_resource type="Curve" id="Curve_mgiss"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_0diqx"]
+curve = SubResource("Curve_mgiss")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_or8g8"]
+emission_shape = 3
+emission_box_extents = Vector3(1, 1, 1)
+initial_velocity_min = 2.0
+initial_velocity_max = 4.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.5
+scale_max = 0.5
+scale_curve = SubResource("CurveTexture_0diqx")
+color_ramp = SubResource("GradientTexture1D_0diqx")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0diqx"]
+render_priority = 0
+shader = ExtResource("5_0diqx")
+shader_parameter/Intensity = 10.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_or8g8"]
+material = SubResource("ShaderMaterial_0diqx")
 
 [node name="PaddleSquare" type="Node3D" node_paths=PackedStringArray("ball", "top_paddle", "bottom_paddle", "countdown_text", "lively_camera")]
 script = ExtResource("1_vsrrr")
@@ -16,8 +73,12 @@ bottom_paddle = NodePath("BottomPaddle")
 countdown_text = NodePath("Countdown")
 lively_camera = NodePath("Camera3D")
 
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_or8g8")
+
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.149535, -0.661607, 0.734789, 0, 0.743145, 0.669131, -0.988756, -0.100059, 0.111126, 0, 0, 0)
+visible = false
 shadow_enabled = true
 
 [node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
@@ -56,7 +117,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, 0.5, 10.5)
 size = Vector3(2, 1, 2)
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 33.686, 0)
+transform = Transform3D(1, 0, 0, 0, 0.642788, 0.766044, 0, -0.766044, 0.642788, 0, 19, 20)
 script = ExtResource("2_mgiss")
 
 [node name="TopPaddle" parent="." node_paths=PackedStringArray("score_text") instance=ExtResource("1_5ebhm")]
@@ -71,7 +132,16 @@ min_extents = 1.0
 max_extents = 1.0
 score_text = NodePath("../BottomScore")
 
-[node name="Ball" parent="." instance=ExtResource("2_j8bx3")]
+[node name="Ball" type="MeshInstance3D" parent="." node_paths=PackedStringArray("bounce_particle")]
+mesh = SubResource("BoxMesh_j8bx3")
+script = ExtResource("3_vsrrr")
+bounce_particle = NodePath("../Bounce Particle")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Ball"]
+light_color = Color(1, 1, 0, 1)
+light_energy = 5.0
+omni_range = 100.0
+omni_attenuation = 2.0
 
 [node name="TopScore" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, -5)
@@ -92,3 +162,10 @@ transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 
 pixel_size = 0.08
 text = "GET READY"
 outline_size = 0
+
+[node name="Bounce Particle" type="GPUParticles3D" parent="."]
+emitting = false
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_or8g8")
+draw_pass_1 = SubResource("BoxMesh_or8g8")
