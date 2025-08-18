@@ -7,6 +7,7 @@ extends Node3D
 @export_range(2, 100) var points_to_win := 3
 @export var countdown_text: Label3D
 @export_range(1, 100) var new_game_delay := 3.0
+@export var lively_camera: LivelyCamera
 
 var countdown_until_new_game := 0.0
 
@@ -57,19 +58,24 @@ func bounce_y(boundary: float, defender: Paddle, attacker: Paddle):
 
 	bouncex_if_needed(bounce_x)
 	bounce_x = ball.pos.x - ball.velocity.x * duration_after_bounce
+	lively_camera.push_xy(ball.velocity)
 	ball.bounce_y(boundary)
 	var hit = defender.hit_ball(bounce_x, ball.extents)
 	if hit.hit:
 		ball.set_x_position_and_speed(bounce_x, hit.hit_factor, duration_after_bounce)
-	elif attacker.score_point(points_to_win):
-		end_game()
+	else:
+		lively_camera.jostle_y()
+		if attacker.score_point(points_to_win):
+			end_game()
 
 func bouncex_if_needed(x: float):
 	var x_extents = arena_extents.x - ball.extents
 
 	if x < -x_extents:
+		lively_camera.push_xy(ball.velocity)
 		ball.bounce_x(-x_extents)
 	elif x > x_extents:
+		lively_camera.push_xy(ball.velocity)
 		ball.bounce_x(x_extents)
 
 func end_game():
