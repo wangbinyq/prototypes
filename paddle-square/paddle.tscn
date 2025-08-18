@@ -6,8 +6,9 @@
 
 [sub_resource type="BoxMesh" id="BoxMesh_mpvc0"]
 material = SubResource("StandardMaterial3D_vmcft")
-size = Vector3(8, 1.1, 1.1)
+size = Vector3(1, 1.1, 1.1)
 
 [node name="PaddleTop" type="MeshInstance3D"]
+transform = Transform3D(8, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("BoxMesh_mpvc0")
 script = ExtResource("1_vmcft")

@@ -41,16 +41,17 @@ func hit_ball(ball_x: float, ball_extents: float) -> HitResult:
 	result.hit = abs(result.hit_factor) < 1.0
 	return result
 
-func set_score(s: int):
+func set_score(s: int, points_to_win: int = 1000):
 	self.score = s
 	score_text.text = str(s)
+	set_extents(lerpf(max_extents, min_extents, float(s) / float(points_to_win - 1)))
 
 func start_new_game():
 	set_score(0)
 	change_targeting_bias()
 
 func score_point(points_to_win: int) -> bool:
-	set_score(score + 1)
+	set_score(score + 1, points_to_win)
 	return score >= points_to_win
 
 func change_targeting_bias():
