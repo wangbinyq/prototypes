@@ -7,8 +7,8 @@
 render_priority = 0
 shader = ExtResource("1_jxsfc")
 shader_parameter/BaseColor = Color(1, 1, 1, 1)
-shader_parameter/TimeOfLastHit = 0.0
-shader_parameter/EmissionColor = Color(10, 10, 0, 1)
+shader_parameter/TimeOfLastHit = -100.0
+shader_parameter/EmissionColor = Color(1.5, 1.5, 0, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_mpvc0"]
 material = SubResource("ShaderMaterial_rymce")

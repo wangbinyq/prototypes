@@ -10,6 +10,7 @@ default_value_enabled = true
 [sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_5wuxw"]
 parameter_name = "TimeOfLastHit"
 default_value_enabled = true
+default_value = -99.0
 
 [sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_2gbwp"]
 input_name = "time"
@@ -35,10 +36,10 @@ default_value = Color(10, 10, 0, 1)
 
 [resource]
 code = "shader_type spatial;
-render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx, unshaded;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
 
 uniform vec4 BaseColor : source_color = vec4(1.000000, 1.000000, 1.000000, 1.000000);
-uniform float TimeOfLastHit = 0.0;
+uniform float TimeOfLastHit = -99.0;
 uniform vec4 EmissionColor : source_color = vec4(10.000000, 10.000000, 0.000000, 1.000000);
 
 
@@ -88,7 +89,7 @@ void fragment() {
 
 }
 "
-flags/unshaded = true
+graph_offset = Vector2(-431.931, 17.3166)
 preview_params/EmissionColor = "Color(10, 10, 0, 1)"
 nodes/vertex/0/position = Vector2(300, 140)
 nodes/fragment/0/position = Vector2(180, 20)
@@ -105,9 +106,9 @@ nodes/fragment/6/position = Vector2(-460, 360)
 nodes/fragment/7/node = SubResource("VisualShaderNodeFloatFunc_m3jk1")
 nodes/fragment/7/position = Vector2(-460, 460)
 nodes/fragment/8/node = SubResource("VisualShaderNodeVectorOp_1ggaj")
-nodes/fragment/8/position = Vector2(-180, 420)
+nodes/fragment/8/position = Vector2(-220, 380)
 nodes/fragment/9/node = SubResource("VisualShaderNodeColorParameter_ddy03")
 nodes/fragment/9/position = Vector2(-520, 580)
 nodes/fragment/10/node = SubResource("VisualShaderNodeFloatConstant_mt5jr")
 nodes/fragment/10/position = Vector2(-160, 160)
-nodes/fragment/connections = PackedInt32Array(4, 0, 5, 0, 3, 0, 5, 1, 5, 0, 6, 0, 6, 0, 7, 0, 7, 0, 8, 0, 9, 0, 8, 1, 8, 0, 0, 5, 10, 0, 0, 3, 2, 0, 0, 0)
+nodes/fragment/connections = PackedInt32Array(4, 0, 5, 0, 3, 0, 5, 1, 5, 0, 6, 0, 6, 0, 7, 0, 7, 0, 8, 0, 9, 0, 8, 1, 10, 0, 0, 3, 8, 0, 0, 5, 2, 0, 0, 0)

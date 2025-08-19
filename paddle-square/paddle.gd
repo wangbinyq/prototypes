@@ -7,17 +7,24 @@ extends MeshInstance3D
 @export_range(0, 100) var speed := 10.0
 @export_range(0, 100) var max_targeting_bias := 0.75
 @export var score_text: Label3D
+@export var goal_mesh: CSGBox3D
+@export_color_no_alpha var goal_color := Color.WHITE
 
 var extents := 0.0
 var score := 0
 var targeting_bias := 0.0
+var goal_material: ShaderMaterial
 var paddle_material: ShaderMaterial
 
+var emission_color_id = 'EmissionColor'
 var time_of_last_hit_id = 'TimeOfLastHit'
 
 func _ready() -> void:
 	paddle_material = mesh.surface_get_material(0).duplicate() as ShaderMaterial
 	set_surface_override_material(0, paddle_material)
+	goal_material = goal_mesh.material.duplicate() as ShaderMaterial
+	goal_mesh.material = goal_material
+	goal_material.set_shader_parameter(emission_color_id, goal_color)
 
 func move(target: float, arena_extents: float, delta: float):
 	var px = adjust_by_ai(position.x, target, delta) if is_ai else adjust_by_player(position.x, delta)
@@ -60,6 +67,7 @@ func start_new_game():
 	change_targeting_bias()
 
 func score_point(points_to_win: int) -> bool:
+	goal_material.set_shader_parameter(time_of_last_hit_id, Time.get_ticks_msec() / 1000.0)
 	set_score(score + 1, points_to_win)
 	return score >= points_to_win
 

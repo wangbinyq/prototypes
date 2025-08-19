@@ -1,8 +1,9 @@
-[gd_scene load_steps=21 format=3 uid="uid://br4d3b1ls0oab"]
+[gd_scene load_steps=22 format=3 uid="uid://br4d3b1ls0oab"]
 
 [ext_resource type="PackedScene" uid="uid://du0aoxpxyms7g" path="res://paddle-square/paddle.tscn" id="1_5ebhm"]
 [ext_resource type="Script" uid="uid://dhu75hx4238ge" path="res://paddle-square/PaddleGame.gd" id="1_vsrrr"]
 [ext_resource type="Script" uid="uid://cdbba57331gle" path="res://paddle-square/lively_camera.gd" id="2_mgiss"]
+[ext_resource type="Shader" uid="uid://bhv14oygvdg33" path="res://paddle-square/reactive-surface.tres" id="2_or8g8"]
 [ext_resource type="Script" uid="uid://dgu67686ntv18" path="res://paddle-square/ball.gd" id="3_vsrrr"]
 [ext_resource type="Shader" uid="uid://do4c0xg3hgqqx" path="res://paddle-square/bounce-particles.tres" id="5_0diqx"]
 
@@ -22,8 +23,12 @@ glow_blend_mode = 1
 glow_hdr_threshold = 2.5
 glow_hdr_scale = 4.0
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5x6pi"]
-albedo_color = Color(0.501961, 0.501961, 0.501961, 1)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_uingb"]
+render_priority = 0
+shader = ExtResource("2_or8g8")
+shader_parameter/BaseColor = Color(0.66, 0.66, 0.66, 1)
+shader_parameter/TimeOfLastHit = -99.0
+shader_parameter/EmissionColor = Color(10, 10, 0, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5ebhm"]
 shading_mode = 0
@@ -107,54 +112,65 @@ visible = false
 shadow_enabled = true
 
 [node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
-material_override = SubResource("StandardMaterial3D_5x6pi")
 
 [node name="Bottom" type="CSGBox3D" parent="CSGCombiner3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10.5)
 size = Vector3(20, 1, 1)
+material = SubResource("ShaderMaterial_uingb")
 
 [node name="Top" type="CSGBox3D" parent="CSGCombiner3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10.5)
 size = Vector3(20, 1, 1)
+material = SubResource("ShaderMaterial_uingb")
 
 [node name="Left" type="CSGBox3D" parent="CSGCombiner3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.5, 0, 0)
 size = Vector3(1, 1, 20)
+material = SubResource("ShaderMaterial_uingb")
 
 [node name="Right" type="CSGBox3D" parent="CSGCombiner3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, 0, 0)
 size = Vector3(1, 1, 20)
+material = SubResource("ShaderMaterial_uingb")
 
 [node name="TopLeft" type="CSGBox3D" parent="CSGCombiner3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.5, 0.5, -10.5)
 size = Vector3(2, 1, 2)
+material = SubResource("ShaderMaterial_uingb")
 
 [node name="TopRight" type="CSGBox3D" parent="CSGCombiner3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, 0.5, -10.5)
 size = Vector3(2, 1, 2)
+material = SubResource("ShaderMaterial_uingb")
 
 [node name="BottomLeft" type="CSGBox3D" parent="CSGCombiner3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.5, 0.5, 10.5)
 size = Vector3(2, 1, 2)
+material = SubResource("ShaderMaterial_uingb")
 
 [node name="BottomRight" type="CSGBox3D" parent="CSGCombiner3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, 0.5, 10.5)
 size = Vector3(2, 1, 2)
+material = SubResource("ShaderMaterial_uingb")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.642788, 0.766044, 0, -0.766044, 0.642788, 0, 19, 20)
 script = ExtResource("2_mgiss")
 
-[node name="TopPaddle" parent="." node_paths=PackedStringArray("score_text") instance=ExtResource("1_5ebhm")]
+[node name="TopPaddle" parent="." node_paths=PackedStringArray("score_text", "goal_mesh") instance=ExtResource("1_5ebhm")]
 transform = Transform3D(8, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10.5)
 is_ai = true
 min_extents = 1.0
 score_text = NodePath("../TopScore")
+goal_mesh = NodePath("../CSGCombiner3D/Bottom")
+goal_color = Color(1.2, 0, 0, 1)
 
-[node name="BottomPaddle" parent="." node_paths=PackedStringArray("score_text") instance=ExtResource("1_5ebhm")]
+[node name="BottomPaddle" parent="." node_paths=PackedStringArray("score_text", "goal_mesh") instance=ExtResource("1_5ebhm")]
 transform = Transform3D(8, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10.5)
 min_extents = 1.0
 score_text = NodePath("../BottomScore")
+goal_mesh = NodePath("../CSGCombiner3D/Top")
+goal_color = Color(0, 1.2, 0, 1)
 
 [node name="Ball" type="MeshInstance3D" parent="." node_paths=PackedStringArray("bounce_particle", "start_particle", "trail_particle")]
 mesh = SubResource("BoxMesh_j8bx3")
