@@ -107,3 +107,20 @@ func update():
 			t.origin = pos
 			multimesh.set_instance_transform(block_offset + bi, t)
 			multimesh.set_instance_color(block_offset + bi, Color.WHITE * (coloration if altered else 0.5))
+
+func try_get_hit_cell_index(origin: Vector3, direction: Vector3) -> int:
+	var p = origin - direction * (origin.y / direction.y)
+	var x: float = p.x + BLOCK_COLUMNS_PER_CELL / 2 + 1.5
+	x /= BLOCK_COLUMNS_PER_CELL + 1
+	x += (columns - 1) * 0.5
+	var c := floori(x)
+
+	var z: float = -p.z + BLOCK_ROWS_PER_CELL / 2.0 + 1.5
+	z /= BLOCK_ROWS_PER_CELL + 1
+	z += (rows - 1) * 0.5 + (c & 1) * 0.5 - 0.25
+	var r := floori(z)
+
+	var cell_index = grid.try_get_cell_index(r, c)
+	if cell_index > -1 && x - c > 1.0 / (BLOCK_COLUMNS_PER_CELL + 1) && z - r > 1.0 / (BLOCK_ROWS_PER_CELL + 1):
+		return cell_index
+	return -1

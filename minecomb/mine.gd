@@ -7,12 +7,15 @@ extends Node3D
 @export var mesh: Mesh
 @export var material: Material
 
+
 var grid_visualization: GridVisualization
 var grid: Grid
+var camera: Camera3D
 
 func _ready() -> void:
 	var vp = get_viewport()
 	vp.msaa_3d = Viewport.MSAA_8X
+	camera = vp.get_camera_3d()
 
 func _enter_tree() -> void:
 	grid = Grid.new(rows, columns)
@@ -29,8 +32,18 @@ func _process(_delta):
 		_enter_tree()
 	var fps = Engine.get_frames_per_second()
 	fps_text.text = "FPS: " + str(fps)
-	grid_visualization.update()
 
 func _on_button_pressed() -> void:
 	_exit_tree()
 	_enter_tree()
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			var pos = event.position
+			var origin = camera.project_ray_origin(pos)
+			var direction = camera.project_ray_normal(pos)
+			var cell_index = grid_visualization.try_get_hit_cell_index(origin, direction)
+			if cell_index > -1:
+				grid[str(cell_index)] = CellState.MARKED_SURE
+				grid_visualization.update()

@@ -20,6 +20,11 @@ func _get(property: StringName) -> int:
 	var index = int(property)
 	return states.get(index)
 
+func _set(property: StringName, value: Variant) -> bool:
+	var index = int(property)
+	states.set(index, int(value))
+	return true
+
 func get_cell_index(row: int, column: int) -> int:
 	return row * columns + column
 
