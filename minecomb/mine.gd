@@ -83,5 +83,5 @@ func do_reveal_action(cell_index: int) -> bool:
 	var state = grid[str(cell_index)]
 	if CellState.is_(state, CellState.MARKED_OR_REVEALED):
 		return false
-	grid[str(cell_index)] = CellState.with(state, CellState.REVEALED)
+	grid.reveal(cell_index)
 	return true

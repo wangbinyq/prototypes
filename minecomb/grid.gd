@@ -63,7 +63,7 @@ func set_mine(index: int) -> void:
 	increment(r, c - 1)
 	increment(r, c + 1)
 
-	var row_offset = 1 if (c & 1) == 0 else -1
+	var row_offset = 1 if c & 1 == 0 else -1
 	increment(r + row_offset, c - 1)
 	increment(r + row_offset, c + 1)
 
@@ -72,3 +72,34 @@ func increment(r: int, c: int) -> void:
 	if i == -1:
 		return
 	states[i] += 1
+
+func reveal(index: int) -> void:
+	var row_column = get_row_column(index)
+	var r = row_column[0]
+	var c = row_column[1]
+	var stack := Array()
+
+	push_if_needed(stack, r, c)
+	while stack.size() > 0:
+		c = stack.pop_back()
+		r = stack.pop_back()
+		push_if_needed(stack, r - 1, c)
+		push_if_needed(stack, r + 1, c)
+		push_if_needed(stack, r, c - 1)
+		push_if_needed(stack, r, c + 1)
+
+		r += 1 if c & 1 == 0 else -1
+		push_if_needed(stack, r, c - 1)
+		push_if_needed(stack, r, c + 1)
+		
+
+func push_if_needed(stack: Array, r: int, c: int) -> void:
+	var i = try_get_cell_index(r, c)
+	if i == -1:
+		return
+	var state = states[i]
+	if CellState.is_not(state, CellState.MARKED_OR_REVEALED):
+		if state == CellState.ZERO:
+			stack.append(r)
+			stack.append(c)
+		states[i] = CellState.with(state, CellState.REVEALED)
