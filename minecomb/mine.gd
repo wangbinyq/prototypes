@@ -21,6 +21,7 @@ func _ready() -> void:
 
 func _enter_tree() -> void:
 	grid = Grid.new(rows, columns)
+	grid.place_mines(mines)
 	grid_visualization = GridVisualization.new(grid, material, mesh)
 	add_child(grid_visualization)
 
