@@ -55,11 +55,13 @@ static func get_symbol_index(state: int):
 var grid: Grid
 var columns: int
 var rows: int
+var ripples: Array[Vector3]
 
 func _init(g: Grid, material: Material, mesh: Mesh):
 	grid = g
 	columns = grid.columns
 	rows = grid.rows
+	ripples = []
 	multimesh = MultiMesh.new()
 	multimesh.use_colors = true
 	multimesh.transform_format = MultiMesh.TRANSFORM_3D
@@ -103,10 +105,34 @@ func update():
 		for bi in range(BLOCKS_PER_CELL):
 			var altered = bitmap & (1 << bi) != 0
 			var pos = cell_pos + get_block_position(bi)
-			pos.y = 0.5 if altered else 0.0
+			var r := accumulate_ripples(pos)
+			pos.y = 0.5 if altered else 0.0 - 0.5 * r
 			t.origin = pos
 			multimesh.set_instance_transform(block_offset + bi, t)
-			multimesh.set_instance_color(block_offset + bi, Color.WHITE * (coloration if altered else 0.5))
+			multimesh.set_instance_color(block_offset + bi, Color.WHITE * (coloration if altered else 0.5) * (1 - 0.05 * r))
+
+func _process(delta: float) -> void:
+	var to_erase = []
+	for i in ripples.size():
+		var ripple = ripples[i]
+		if ripple.z < 1.0:
+			ripple.z = minf(ripple.z + delta, 1)
+			ripples[i] = ripple
+		else:
+			to_erase.append(ripple)
+	for ripple in to_erase:
+		ripples.erase(ripple)
+	
+	if not ripples.is_empty():
+		update()
+
+func accumulate_ripples(pos: Vector3) -> float:
+	var sum := 0.0
+	for ripple in ripples:
+		var d := 50.0 * ripple.z - (Vector2(pos.x, pos.z) - Vector2(ripple.x, ripple.y)).length()
+		if d > 0 && d < 10:
+			sum += (1.0 - cos(d * 2 * PI / 10)) * (1 - ripple.z * ripple.z)
+	return sum
 
 func try_get_hit_cell_index(origin: Vector3, direction: Vector3) -> int:
 	var p = origin - direction * (origin.y / direction.y)
@@ -122,5 +148,7 @@ func try_get_hit_cell_index(origin: Vector3, direction: Vector3) -> int:
 
 	var cell_index = grid.try_get_cell_index(r, c)
 	if cell_index > -1 && x - c > 1.0 / (BLOCK_COLUMNS_PER_CELL + 1) && z - r > 1.0 / (BLOCK_ROWS_PER_CELL + 1):
+		if ripples.size() < 10:
+			ripples.append(Vector3(p.x, p.z, 0))
 		return cell_index
 	return -1

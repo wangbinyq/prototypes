@@ -67,12 +67,10 @@ func _input(event: InputEvent) -> void:
 		else:
 			return
 
-		grid_visualization.update()
-
-func do_mark_action(cell_index: int) -> bool:
+func do_mark_action(cell_index: int):
 	var state = grid[str(cell_index)]
 	if CellState.is_(state, CellState.REVEALED):
-		return false
+		return
 	if CellState.is_not(state, CellState.MARKED):
 		grid[str(cell_index)] = CellState.with(state, CellState.MARKED_SURE)
 		marked_sure_count += 1
@@ -86,12 +84,12 @@ func do_mark_action(cell_index: int) -> bool:
 		grid[str(cell_index)] = CellState.without(state, CellState.MARKED_UNSURE)
 	
 	mines_text.text = str(mines - marked_sure_count)
-	return true
+	return
 
-func do_reveal_action(cell_index: int) -> bool:
+func do_reveal_action(cell_index: int):
 	var state = grid[str(cell_index)]
 	if CellState.is_(state, CellState.MARKED_OR_REVEALED):
-		return false
+		return
 	grid.reveal(cell_index)
 	if CellState.is_(state, CellState.MINE):
 		is_game_over = true
@@ -100,4 +98,3 @@ func do_reveal_action(cell_index: int) -> bool:
 	elif grid.hidden_cell_count == mines:
 		is_game_over = true
 		mines_text.text = "Success"
-	return true
