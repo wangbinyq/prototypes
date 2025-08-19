@@ -29,7 +29,7 @@ func _process(_delta):
 		_enter_tree()
 	var fps = Engine.get_frames_per_second()
 	fps_text.text = "FPS: " + str(fps)
-
+	grid_visualization.update()
 
 func _on_button_pressed() -> void:
 	_exit_tree()

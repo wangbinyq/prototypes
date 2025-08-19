@@ -36,6 +36,22 @@ const COLORATIONS = [
 	0.00 * Color(0, 0, 0) # hidden
 ]
 
+enum Symbol {Mine = 7, MarkedSure, MarkedMistaken, MarkedUnsure, Hidden}
+
+static func get_symbol_index(state: int):
+	if CellState.is_(state, CellState.REVEALED):
+		if CellState.is_(state, CellState.MINE):
+			return Symbol.Mine
+		elif CellState.is_(state, CellState.MARKED_SURE):
+			return Symbol.MarkedMistaken
+		else:
+			return CellState.without(state, CellState.REVEALED)
+	elif CellState.is_(state, CellState.MARKED_SURE):
+		return Symbol.MarkedSure
+	elif CellState.is_(state, CellState.MARKED_UNSURE):
+		return Symbol.MarkedUnsure
+	return Symbol.Hidden
+
 var grid: Grid
 var columns: int
 var rows: int
@@ -81,8 +97,9 @@ func update():
 	for i in range(grid.cell_count):
 		var cell_pos = get_cell_position(i)
 		var block_offset = i * BLOCKS_PER_CELL
-		var bitmap = BITMAPS[i % BITMAPS.size()]
-		var coloration = COLORATIONS[i % COLORATIONS.size()]
+		var symbol_index = get_symbol_index(grid[str(i)] as int)
+		var bitmap = BITMAPS[symbol_index]
+		var coloration = COLORATIONS[symbol_index]
 		for bi in range(BLOCKS_PER_CELL):
 			var altered = bitmap & (1 << bi) != 0
 			var pos = cell_pos + get_block_position(bi)
