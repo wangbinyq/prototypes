@@ -103,3 +103,8 @@ func push_if_needed(stack: Array, r: int, c: int) -> void:
 			stack.append(r)
 			stack.append(c)
 		states[i] = CellState.with(state, CellState.REVEALED)
+
+func reveal_mines_and_mistakes() -> void:
+	for i in range(cell_count):
+		var state = states[i]
+		states[i] = CellState.with(state, CellState.REVEALED if CellState.is_(state, CellState.MARKED_SURE_OR_MINE) else CellState.ZERO)

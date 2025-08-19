@@ -13,6 +13,7 @@ var grid_visualization: GridVisualization
 var grid: Grid
 var camera: Camera3D
 var marked_sure_count := 0
+var is_game_over := false
 
 func _ready() -> void:
 	var vp = get_viewport()
@@ -21,13 +22,16 @@ func _ready() -> void:
 
 func _enter_tree() -> void:
 	grid = Grid.new(rows, columns)
-	grid.place_mines(mines)
 	grid_visualization = GridVisualization.new(grid, material, mesh)
 	add_child(grid_visualization)
+	start_new_game()
 
+func start_new_game():
+	is_game_over = false
 	mines = mini(mines, grid.cell_count)
 	mines_text.text = str(mines)
 	marked_sure_count = 0
+	grid.place_mines(mines)
 
 func _exit_tree() -> void:
 	grid._destroy()
@@ -50,6 +54,10 @@ func _input(event: InputEvent) -> void:
 		var origin = camera.project_ray_origin(pos)
 		var direction = camera.project_ray_normal(pos)
 		var cell_index = grid_visualization.try_get_hit_cell_index(origin, direction)
+
+		if is_game_over:
+			start_new_game()
+
 		if cell_index == -1:
 			return
 		if event.button_index == MOUSE_BUTTON_LEFT:
@@ -58,6 +66,7 @@ func _input(event: InputEvent) -> void:
 			do_mark_action(cell_index)
 		else:
 			return
+
 		grid_visualization.update()
 
 func do_mark_action(cell_index: int) -> bool:
@@ -84,4 +93,8 @@ func do_reveal_action(cell_index: int) -> bool:
 	if CellState.is_(state, CellState.MARKED_OR_REVEALED):
 		return false
 	grid.reveal(cell_index)
+	if CellState.is_(state, CellState.MINE):
+		is_game_over = true
+		mines_text.text = "Failure"
+		grid.reveal_mines_and_mistakes()
 	return true
