@@ -97,4 +97,7 @@ func do_reveal_action(cell_index: int) -> bool:
 		is_game_over = true
 		mines_text.text = "Failure"
 		grid.reveal_mines_and_mistakes()
+	elif grid.hidden_cell_count == mines:
+		is_game_over = true
+		mines_text.text = "Success"
 	return true

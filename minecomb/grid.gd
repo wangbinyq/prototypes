@@ -7,6 +7,9 @@ var cell_count: int:
 		return rows * columns
 var states: PackedInt32Array = PackedInt32Array()
 var revealed_cell_count: int = 0
+var hidden_cell_count: int:
+	get:
+		return cell_count - revealed_cell_count
 
 func _init(r: int, c: int) -> void:
 	self.rows = r
@@ -39,6 +42,7 @@ func get_row_column(index: int) -> Array[int]:
 	return [r, c]
 
 func place_mines(mines: int) -> void:
+	revealed_cell_count = 0
 	var candidate_count = cell_count
 	var candidates = PackedInt32Array()
 	candidates.resize(candidate_count)
@@ -102,6 +106,7 @@ func push_if_needed(stack: Array, r: int, c: int) -> void:
 		if state == CellState.ZERO:
 			stack.append(r)
 			stack.append(c)
+		revealed_cell_count += 1
 		states[i] = CellState.with(state, CellState.REVEALED)
 
 func reveal_mines_and_mistakes() -> void:
