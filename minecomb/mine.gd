@@ -4,6 +4,7 @@ extends Node3D
 @export var fps_text: Label
 @export_range(1, 100) var rows := 8
 @export_range(1, 100) var columns := 21
+@export_range(1, 100) var mines := 30
 @export var mesh: Mesh
 @export var material: Material
 
@@ -11,6 +12,7 @@ extends Node3D
 var grid_visualization: GridVisualization
 var grid: Grid
 var camera: Camera3D
+var marked_sure_count := 0
 
 func _ready() -> void:
 	var vp = get_viewport()
@@ -21,6 +23,10 @@ func _enter_tree() -> void:
 	grid = Grid.new(rows, columns)
 	grid_visualization = GridVisualization.new(grid, material, mesh)
 	add_child(grid_visualization)
+
+	mines = mini(mines, grid.cell_count)
+	mines_text.text = str(mines)
+	marked_sure_count = 0
 
 func _exit_tree() -> void:
 	grid._destroy()
@@ -38,12 +44,43 @@ func _on_button_pressed() -> void:
 	_enter_tree()
 
 func _input(event: InputEvent) -> void:
-	if event is InputEventMouseButton:
+	if event is InputEventMouseButton && event.pressed:
+		var pos = event.position
+		var origin = camera.project_ray_origin(pos)
+		var direction = camera.project_ray_normal(pos)
+		var cell_index = grid_visualization.try_get_hit_cell_index(origin, direction)
+		if cell_index == -1:
+			return
 		if event.button_index == MOUSE_BUTTON_LEFT:
-			var pos = event.position
-			var origin = camera.project_ray_origin(pos)
-			var direction = camera.project_ray_normal(pos)
-			var cell_index = grid_visualization.try_get_hit_cell_index(origin, direction)
-			if cell_index > -1:
-				grid[str(cell_index)] = CellState.MARKED_SURE
-				grid_visualization.update()
+			do_reveal_action(cell_index)
+		elif event.button_index == MOUSE_BUTTON_RIGHT:
+			do_mark_action(cell_index)
+		else:
+			return
+		grid_visualization.update()
+
+func do_mark_action(cell_index: int) -> bool:
+	var state = grid[str(cell_index)]
+	if CellState.is_(state, CellState.REVEALED):
+		return false
+	if CellState.is_not(state, CellState.MARKED):
+		grid[str(cell_index)] = CellState.with(state, CellState.MARKED_SURE)
+		marked_sure_count += 1
+	elif CellState.is_(state, CellState.MARKED_SURE):
+		grid[str(cell_index)] = CellState.with(
+			CellState.without(state, CellState.MARKED_SURE),
+			CellState.MARKED_UNSURE
+		)
+		marked_sure_count -= 1
+	else:
+		grid[str(cell_index)] = CellState.without(state, CellState.MARKED_UNSURE)
+	
+	mines_text.text = str(mines - marked_sure_count)
+	return true
+
+func do_reveal_action(cell_index: int) -> bool:
+	var state = grid[str(cell_index)]
+	if CellState.is_(state, CellState.MARKED_OR_REVEALED):
+		return false
+	grid[str(cell_index)] = CellState.with(state, CellState.REVEALED)
+	return true
