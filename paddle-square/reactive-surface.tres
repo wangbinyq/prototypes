@@ -89,7 +89,6 @@ void fragment() {
 
 }
 "
-graph_offset = Vector2(-431.931, 17.3166)
 preview_params/EmissionColor = "Color(10, 10, 0, 1)"
 nodes/vertex/0/position = Vector2(300, 140)
 nodes/fragment/0/position = Vector2(180, 20)

@@ -1,6 +1,7 @@
-[gd_scene load_steps=16 format=3 uid="uid://tupafqr6hooc"]
+[gd_scene load_steps=8 format=3 uid="uid://tupafqr6hooc"]
 
-[ext_resource type="Shader" uid="uid://do4c0xg3hgqqx" path="res://paddle-square/bounce-particles.tres" id="1_7hwnl"]
+[ext_resource type="Script" uid="uid://do4q1hltxu1uj" path="res://runner/tracking_camera.gd" id="1_ljaxb"]
+[ext_resource type="PackedScene" uid="uid://duqg3yn37oudm" path="res://runner/runner_player.tscn" id="2_25h5n"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_rakw6"]
 sky_top_color = Color(0, 0, 0, 1)
@@ -19,62 +20,12 @@ glow_enabled = true
 glow_intensity = 0.5
 glow_blend_mode = 1
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rakw6"]
-albedo_color = Color(1, 1, 0, 1)
-emission_enabled = true
-emission = Color(1, 1, 0, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_rakw6"]
-material = SubResource("StandardMaterial3D_rakw6")
-
-[sub_resource type="Gradient" id="Gradient_25h5n"]
-offsets = PackedFloat32Array(0, 0.106383, 1)
-colors = PackedColorArray(1, 1, 0, 0, 1, 0.894, 0, 1, 1, 0, 0, 0)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_0diqx"]
-gradient = SubResource("Gradient_25h5n")
-
-[sub_resource type="Curve" id="Curve_ljaxb"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_0diqx"]
-curve = SubResource("Curve_ljaxb")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_j4rbn"]
-lifetime_randomness = 0.5
-emission_shape = 1
-emission_sphere_radius = 1.0
-spread = 180.0
-initial_velocity_min = 2.0
-initial_velocity_max = 4.0
-gravity = Vector3(0, 0, 0)
-scale_min = 0.5
-scale_max = 0.5
-scale_curve = SubResource("CurveTexture_0diqx")
-color_ramp = SubResource("GradientTexture1D_0diqx")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_0diqx"]
-render_priority = 0
-shader = ExtResource("1_7hwnl")
-shader_parameter/Intensity = 10.0
-
-[sub_resource type="BoxMesh" id="BoxMesh_otjrf"]
-material = SubResource("ShaderMaterial_0diqx")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ma048"]
-lifetime_randomness = 0.11
-emission_shape = 3
-emission_box_extents = Vector3(1, 1, 1)
-spread = 180.0
-gravity = Vector3(0, 0, 0)
-scale_min = 0.5
-scale_max = 0.5
-scale_curve = SubResource("CurveTexture_0diqx")
-color_ramp = SubResource("GradientTexture1D_0diqx")
+[sub_resource type="BoxMesh" id="BoxMesh_7hwnl"]
+size = Vector3(10, 1, 4)
 
 [sub_resource type="LabelSettings" id="LabelSettings_7hwnl"]
 font_size = 32
+font_color = Color(2, 2, 0, 1)
 
 [node name="RunnerGame" type="Node3D"]
 
@@ -89,30 +40,21 @@ sky_mode = 1
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 2, 40)
 fov = 30.0
+script = ExtResource("1_ljaxb")
 
-[node name="Runner" type="MeshInstance3D" parent="."]
-mesh = SubResource("BoxMesh_rakw6")
+[node name="Runner" parent="." instance=ExtResource("2_25h5n")]
 
-[node name="Explosion Particle" type="GPUParticles3D" parent="Runner"]
-emitting = false
-amount = 100
-one_shot = true
-explosiveness = 1.0
-process_material = SubResource("ParticleProcessMaterial_j4rbn")
-draw_pass_1 = SubResource("BoxMesh_otjrf")
+[node name="Scene" type="Node3D" parent="."]
 
-[node name="Trail Particle" type="GPUParticles3D" parent="Runner"]
-emitting = false
-amount = 20
-lifetime = 1.13
-process_material = SubResource("ParticleProcessMaterial_ma048")
-draw_pass_1 = SubResource("BoxMesh_otjrf")
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Scene"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+mesh = SubResource("BoxMesh_7hwnl")
+skeleton = NodePath("../..")
 
-[node name="OmniLight3D" type="OmniLight3D" parent="Runner"]
-light_color = Color(1, 1, 0, 1)
-light_energy = 10.0
-omni_range = 10.0
-omni_attenuation = 2.0
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Scene"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3, 0)
+mesh = SubResource("BoxMesh_7hwnl")
+skeleton = NodePath("../..")
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
