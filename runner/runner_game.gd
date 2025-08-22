@@ -1,6 +1,8 @@
 extends Node3D
 
 @export_range(0.001, 10) var max_delta_time := 1.0 / 120
+@export var extra_gap_factor := 0.5
+@export var extra_sequence_factor := 1
 
 @onready var runner := $"Runner" as Runner
 @onready var tracking_camera := $Camera3D as TrackingCamera
@@ -44,6 +46,10 @@ func update_game(delta: float):
 	tracking_camera.track(runner.position)
 	display_text.text = '%d' % floorf(runner.pos.x)
 
-	obstacle_generator.fill_view(tracking_camera)
+	obstacle_generator.fill_view(
+		tracking_camera,
+		extra_gap_factor * runner.speed_x,
+		extra_sequence_factor * runner.speed_x
+	)
 	for generator in skyline_generators:
 		generator.fill_view(tracking_camera)

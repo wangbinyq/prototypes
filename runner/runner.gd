@@ -23,6 +23,10 @@ var grounded: bool
 var transitioning: bool
 var jump_time_remaining := 0.0
 
+var speed_x: float:
+	get:
+		return velocity.x
+
 func _ready() -> void:
 	mesh.hide()
 	point_light.hide()

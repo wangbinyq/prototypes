@@ -218,11 +218,12 @@ gap_y_max = 100.0
 [node name="ObstacleGenerator" type="Node3D" parent="." node_paths=PackedStringArray("objects", "gap_object")]
 script = ExtResource("5_otjrf")
 objects = [NodePath("../SkylineObjects/ObstacleSkylineObject"), NodePath("../SkylineObjects/ObstacleSkylineObject2")]
-altitude_min = -2.0
-altitude_max = 2.0
+altitude_min = -4.0
+altitude_max = 7.0
 gap_length_max = 5.0
 sequence_length_max = 5.0
 gap_object = NodePath("../SkylineObjects/GapSkylineObject")
+max_y_difference = 5.0
 metadata/_custom_type_script = "uid://duonkkwcf7kt6"
 
 [node name="SkylineGenerators" type="Node3D" parent="."]

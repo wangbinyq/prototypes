@@ -10,8 +10,11 @@ extends Node3D
 @export var gap_length_max: float
 @export var sequence_length_min: float
 @export var sequence_length_max: float
-
 @export var gap_object: SkylineObject
+
+@export var single_sequence_start: bool
+
+@export_range(0, 10) var max_y_difference := 0.0
 
 var altitude: FloatRange:
 	get:
@@ -35,14 +38,17 @@ func get_instance() -> SkylineObject:
 	add_child(instance)
 	return instance
 
-func fill_view(view: TrackingCamera):
+func fill_view(view: TrackingCamera, extra_gap_length := 0.0, extra_sequence_length := 0.0):
 	var visible_x = view.visible_x(distance).grow_extents(BORDER)
 
 	while leftmost != rightmost and leftmost.max_x < visible_x.min:
 		leftmost = leftmost.recycle()
 	while end_position.x < visible_x.max:
 		if end_position.x > sequence_end_x:
-			start_new_sequence(gap_length.rand, sequence_length.rand)
+			start_new_sequence(
+				gap_length.rand + extra_gap_length,
+				sequence_length.rand + extra_sequence_length
+			)
 		var next = get_instance()
 		rightmost.next = next
 		rightmost = next
@@ -52,7 +58,7 @@ func start_new_game(view: TrackingCamera) -> SkylineObject:
 	while leftmost != null:
 		leftmost = leftmost.recycle()
 	var visible_x = view.visible_x(distance).grow_extents(BORDER)
-	sequence_end_x = sequence_length.rand
+	sequence_end_x = visible_x.max if single_sequence_start else end_position.x + sequence_length.rand
 	end_position = Vector3(visible_x.min, altitude.rand, distance)
 
 	leftmost = get_instance()
@@ -69,5 +75,12 @@ func start_new_sequence(gap: float, sequence: float):
 		add_child(rightmost)
 		rightmost.fill_gap(end_position, gap)
 	end_position.x += gap
-	end_position.y = altitude.rand
 	sequence_end_x = end_position.x + sequence
+
+	if max_y_difference > 0:
+		end_position.y = randf_range(
+			maxf(end_position.y - max_y_difference, altitude.min),
+			minf(end_position.y + max_y_difference, altitude.max)
+		)
+	else:
+		end_position.y = altitude.rand
