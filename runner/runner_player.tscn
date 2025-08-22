@@ -72,7 +72,6 @@ draw_pass_1 = SubResource("BoxMesh_otjrf")
 
 [node name="Trail Particle" type="GPUParticles3D" parent="."]
 emitting = false
-amount = 10
 process_material = SubResource("ParticleProcessMaterial_0y15v")
 draw_pass_1 = SubResource("BoxMesh_otjrf")
 

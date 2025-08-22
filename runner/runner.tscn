@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://tupafqr6hooc"]
+[gd_scene load_steps=24 format=3 uid="uid://tupafqr6hooc"]
 
 [ext_resource type="Script" uid="uid://bh5xanuudaram" path="res://runner/runner_game.gd" id="1_j4rbn"]
 [ext_resource type="Script" uid="uid://do4q1hltxu1uj" path="res://runner/tracking_camera.gd" id="1_ljaxb"]
@@ -75,6 +75,13 @@ albedo_color = Color(0.227451, 0.227451, 0.227451, 1)
 [sub_resource type="BoxMesh" id="BoxMesh_vmt3c"]
 material = SubResource("StandardMaterial3D_ma048")
 size = Vector3(10, 25, 4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vmt3c"]
+albedo_color = Color(0.415981, 0.41598, 0.41598, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_otjrf"]
+material = SubResource("StandardMaterial3D_vmt3c")
+size = Vector3(10, 3, 4)
 
 [node name="RunnerGame" type="Node3D"]
 script = ExtResource("1_j4rbn")
@@ -160,6 +167,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -12.5, 0)
 mesh = SubResource("BoxMesh_vmt3c")
 skeleton = NodePath("../../..")
 
+[node name="ForeSkylineObject2" type="Node3D" parent="SkylineObjects"]
+script = ExtResource("4_j4rbn")
+extents = 5.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SkylineObjects/ForeSkylineObject2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.5, 0)
+mesh = SubResource("BoxMesh_otjrf")
+skeleton = NodePath("../../..")
+
 [node name="SkylineGenerators" type="Node3D" parent="."]
 
 [node name="Background" type="Node3D" parent="SkylineGenerators" node_paths=PackedStringArray("objects")]
@@ -176,4 +192,12 @@ objects = [NodePath("../../SkylineObjects/MidSkylineObject")]
 distance = -40.0
 altitude_min = -5.0
 altitude_max = 1.0
+metadata/_custom_type_script = "uid://duonkkwcf7kt6"
+
+[node name="Foreground" type="Node3D" parent="SkylineGenerators" node_paths=PackedStringArray("objects")]
+script = ExtResource("5_otjrf")
+objects = [NodePath("../../SkylineObjects/ForeSkylineObject2")]
+distance = 10.0
+altitude_min = -6.0
+altitude_max = -4.0
 metadata/_custom_type_script = "uid://duonkkwcf7kt6"
