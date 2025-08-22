@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://tupafqr6hooc"]
+[gd_scene load_steps=26 format=3 uid="uid://tupafqr6hooc"]
 
 [ext_resource type="Script" uid="uid://bh5xanuudaram" path="res://runner/runner_game.gd" id="1_j4rbn"]
 [ext_resource type="Script" uid="uid://do4q1hltxu1uj" path="res://runner/tracking_camera.gd" id="1_ljaxb"]
@@ -82,6 +82,13 @@ albedo_color = Color(0.415981, 0.41598, 0.41598, 1)
 [sub_resource type="BoxMesh" id="BoxMesh_otjrf"]
 material = SubResource("StandardMaterial3D_vmt3c")
 size = Vector3(10, 3, 4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_l05rq"]
+albedo_color = Color(0.1843, 0.34144, 0.97, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_322il"]
+material = SubResource("StandardMaterial3D_l05rq")
+size = Vector3(10, 15, 4)
 
 [node name="RunnerGame" type="Node3D"]
 script = ExtResource("1_j4rbn")
@@ -169,14 +176,48 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -12.5, 0)
 mesh = SubResource("BoxMesh_vmt3c")
 skeleton = NodePath("../../..")
 
-[node name="ForeSkylineObject2" type="Node3D" parent="SkylineObjects"]
+[node name="ForeSkylineObject" type="Node3D" parent="SkylineObjects"]
 script = ExtResource("4_j4rbn")
 extents = 5.0
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="SkylineObjects/ForeSkylineObject2"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SkylineObjects/ForeSkylineObject"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.5, 0)
 mesh = SubResource("BoxMesh_otjrf")
 skeleton = NodePath("../../..")
+
+[node name="ObstacleSkylineObject" type="Node3D" parent="SkylineObjects"]
+script = ExtResource("4_j4rbn")
+extents = 5.0
+gap_y_max = 100.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SkylineObjects/ObstacleSkylineObject"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -7.5, 0)
+mesh = SubResource("BoxMesh_322il")
+skeleton = NodePath("../../..")
+
+[node name="ObstacleSkylineObject2" type="Node3D" parent="SkylineObjects"]
+script = ExtResource("4_j4rbn")
+extents = 5.0
+gap_y_max = 4.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SkylineObjects/ObstacleSkylineObject2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -7.5, 0)
+mesh = SubResource("BoxMesh_322il")
+skeleton = NodePath("../../..")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="SkylineObjects/ObstacleSkylineObject2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11.5, 0)
+mesh = SubResource("BoxMesh_322il")
+skeleton = NodePath("../../..")
+
+[node name="ObstacleGenerator" type="Node3D" parent="." node_paths=PackedStringArray("objects")]
+script = ExtResource("5_otjrf")
+objects = [NodePath("../SkylineObjects/ObstacleSkylineObject"), NodePath("../SkylineObjects/ObstacleSkylineObject2")]
+altitude_min = -2.0
+altitude_max = 2.0
+gap_length_max = 10.0
+sequence_length_max = 10.0
+metadata/_custom_type_script = "uid://duonkkwcf7kt6"
 
 [node name="SkylineGenerators" type="Node3D" parent="."]
 
@@ -198,7 +239,7 @@ metadata/_custom_type_script = "uid://duonkkwcf7kt6"
 
 [node name="Foreground" type="Node3D" parent="SkylineGenerators" node_paths=PackedStringArray("objects")]
 script = ExtResource("5_otjrf")
-objects = [NodePath("../../SkylineObjects/ForeSkylineObject2")]
+objects = [NodePath("../../SkylineObjects/ForeSkylineObject")]
 distance = 10.0
 altitude_min = -6.0
 altitude_max = -4.0

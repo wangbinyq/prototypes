@@ -2,6 +2,12 @@ class_name SkylineObject
 extends Node3D
 
 @export_range(1, 100) var extents: float
+@export var gap_y_min: float
+@export var gap_y_max: float
+
+var gap_y: FloatRange:
+	get:
+		return FloatRange.new(gap_y_min, gap_y_max).shift(position.y)
 
 var pool: Array[SkylineObject]
 var next: SkylineObject
