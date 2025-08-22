@@ -26,6 +26,8 @@ var jump_time_remaining := 0.0
 var speed_x: float:
 	get:
 		return velocity.x
+	set(value):
+		velocity.x = value
 
 func _ready() -> void:
 	mesh.hide()
@@ -87,6 +89,7 @@ func constrain_y(obstacle: SkylineObject):
 		pos.y = open_y.max - extents
 		velocity.y = minf(velocity.y, 0)
 		jump_time_remaining = 0
+	obstacle.check(self)
 
 func check_collision():
 	var tp := Vector2.ZERO

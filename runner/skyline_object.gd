@@ -44,3 +44,6 @@ func fill_gap(pos: Vector3, gap: float):
 	extents = gap * 0.5
 	pos.x += extents
 	position = pos
+
+func check(runner: Runner):
+	pass
