@@ -1,5 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://tupafqr6hooc"]
+[gd_scene load_steps=9 format=3 uid="uid://tupafqr6hooc"]
 
+[ext_resource type="Script" uid="uid://bh5xanuudaram" path="res://runner/runner_game.gd" id="1_j4rbn"]
 [ext_resource type="Script" uid="uid://do4q1hltxu1uj" path="res://runner/tracking_camera.gd" id="1_ljaxb"]
 [ext_resource type="PackedScene" uid="uid://duqg3yn37oudm" path="res://runner/runner_player.tscn" id="2_25h5n"]
 
@@ -28,6 +29,7 @@ font_size = 32
 font_color = Color(2, 2, 0, 1)
 
 [node name="RunnerGame" type="Node3D"]
+script = ExtResource("1_j4rbn")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_25h5n")
