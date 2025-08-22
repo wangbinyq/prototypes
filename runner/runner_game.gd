@@ -17,8 +17,8 @@ func _ready() -> void:
 
 func start_new_game():
 	tracking_camera.start_new_game()
-	runner.start_new_game()
-	obstacle_generator.start_new_game(tracking_camera)
+	runner.start_new_game(obstacle_generator.start_new_game(tracking_camera))
+	tracking_camera.track(runner.position)
 	for generator in skyline_generators:
 		generator.start_new_game(tracking_camera)
 	is_playing = true

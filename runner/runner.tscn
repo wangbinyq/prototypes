@@ -98,7 +98,6 @@ environment = SubResource("Environment_25h5n")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.866025, 0.17101, -0.469846, 0, 0.939693, 0.34202, 0.5, -0.296198, 0.813798, 0, 0, 0)
-shadow_enabled = true
 sky_mode = 1
 
 [node name="Camera3D" type="Camera3D" parent="."]
@@ -210,13 +209,20 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11.5, 0)
 mesh = SubResource("BoxMesh_322il")
 skeleton = NodePath("../../..")
 
-[node name="ObstacleGenerator" type="Node3D" parent="." node_paths=PackedStringArray("objects")]
+[node name="GapSkylineObject" type="Node3D" parent="SkylineObjects"]
+script = ExtResource("4_j4rbn")
+extents = 5.0
+gap_y_min = -100.0
+gap_y_max = 100.0
+
+[node name="ObstacleGenerator" type="Node3D" parent="." node_paths=PackedStringArray("objects", "gap_object")]
 script = ExtResource("5_otjrf")
 objects = [NodePath("../SkylineObjects/ObstacleSkylineObject"), NodePath("../SkylineObjects/ObstacleSkylineObject2")]
 altitude_min = -2.0
 altitude_max = 2.0
-gap_length_max = 10.0
-sequence_length_max = 10.0
+gap_length_max = 5.0
+sequence_length_max = 5.0
+gap_object = NodePath("../SkylineObjects/GapSkylineObject")
 metadata/_custom_type_script = "uid://duonkkwcf7kt6"
 
 [node name="SkylineGenerators" type="Node3D" parent="."]
@@ -227,6 +233,7 @@ objects = [NodePath("../../SkylineObjects/BaseSkylineObject")]
 distance = -80.0
 altitude_min = 5.0
 altitude_max = 15.0
+sequence_length_max = 30.0
 metadata/_custom_type_script = "uid://duonkkwcf7kt6"
 
 [node name="Midground" type="Node3D" parent="SkylineGenerators" node_paths=PackedStringArray("objects")]
@@ -235,6 +242,10 @@ objects = [NodePath("../../SkylineObjects/MidSkylineObject")]
 distance = -40.0
 altitude_min = -5.0
 altitude_max = 1.0
+gap_length_min = 2.0
+gap_length_max = 10.0
+sequence_length_min = 20.0
+sequence_length_max = 60.0
 metadata/_custom_type_script = "uid://duonkkwcf7kt6"
 
 [node name="Foreground" type="Node3D" parent="SkylineGenerators" node_paths=PackedStringArray("objects")]
@@ -243,4 +254,7 @@ objects = [NodePath("../../SkylineObjects/ForeSkylineObject")]
 distance = 10.0
 altitude_min = -6.0
 altitude_max = -4.0
+gap_length_min = 1.0
+gap_length_max = 30.0
+sequence_length_max = 30.0
 metadata/_custom_type_script = "uid://duonkkwcf7kt6"

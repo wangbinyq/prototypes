@@ -2,6 +2,7 @@ class_name Runner
 extends Node3D
 
 @export_range(0, 9e9) var start_speed_x := 5.0
+@export_range(0, 9e9) var extents := 0.5
 
 @onready var mesh := $Mesh as MeshInstance3D
 @onready var point_light = $OmniLight3D
@@ -9,15 +10,19 @@ extends Node3D
 @onready var trail := $"Trail Particle" as GPUParticles3D
 
 var pos := Vector2.ZERO
+var current_obstacle: SkylineObject
 
 func _ready() -> void:
 	mesh.hide()
 	point_light.hide()
 	trail.emitting = false
 
-func start_new_game():
-	pos = Vector2.ZERO
-	position = Vector3.ZERO
+func start_new_game(obstacle: SkylineObject):
+	current_obstacle = obstacle
+	while current_obstacle.max_x < extents:
+		current_obstacle = current_obstacle.next
+	pos = Vector2(0, current_obstacle.gap_y.min + extents)
+	position = Vector3(pos.x, pos.y, 0)
 	mesh.show()
 	point_light.show()
 	trail.emitting = true

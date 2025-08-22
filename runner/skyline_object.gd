@@ -39,3 +39,8 @@ func recycle() -> SkylineObject:
 	var n = next;
 	next = null
 	return n
+
+func fill_gap(pos: Vector3, gap: float):
+	extents = gap * 0.5
+	pos.x += extents
+	position = pos

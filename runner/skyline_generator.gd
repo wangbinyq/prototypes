@@ -11,6 +11,8 @@ extends Node3D
 @export var sequence_length_min: float
 @export var sequence_length_max: float
 
+@export var gap_object: SkylineObject
+
 var altitude: FloatRange:
 	get:
 		return FloatRange.new(altitude_min, altitude_max)
@@ -46,7 +48,7 @@ func fill_view(view: TrackingCamera):
 		rightmost = next
 		end_position = rightmost.place_after(end_position)
 
-func start_new_game(view: TrackingCamera):
+func start_new_game(view: TrackingCamera) -> SkylineObject:
 	while leftmost != null:
 		leftmost = leftmost.recycle()
 	var visible_x = view.visible_x(distance).grow_extents(BORDER)
@@ -57,8 +59,15 @@ func start_new_game(view: TrackingCamera):
 	rightmost = leftmost
 	end_position = rightmost.place_after(end_position)
 	fill_view(view)
+	return leftmost
 
 func start_new_sequence(gap: float, sequence: float):
+	if gap_object != null:
+		var next = gap_object.get_instance()
+		rightmost.next = next
+		rightmost = next
+		add_child(rightmost)
+		rightmost.fill_gap(end_position, gap)
 	end_position.x += gap
 	end_position.y = altitude.rand
 	sequence_end_x = end_position.x + sequence
