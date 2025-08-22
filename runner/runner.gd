@@ -2,6 +2,8 @@ class_name Runner
 extends Node3D
 
 @export_range(0, 9e9) var start_speed_x := 5.0
+@export_range(0, 9e9) var max_speed_x := 40.0
+@export var run_acceleration_curve: Curve
 @export_range(0, 9e9) var jump_acceleration := 100.0
 @export_range(0, 9e9) var gravity := 40.0
 @export_range(0, 9e9) var extents := 0.5
@@ -95,13 +97,17 @@ func check_collision():
 	return false
 
 func move(dt: float):
-	pos += velocity * dt
 	if jump_time_remaining > 0:
 		jump_time_remaining -= dt
 		velocity.y += jump_acceleration * minf(dt, jump_time_remaining)
 	else:
 		velocity.y -= gravity * dt
-	grounded = false
+	
+	if grounded:
+		var vx = velocity.x + run_acceleration_curve.sample(velocity.x / max_speed_x) * dt
+		velocity.x = minf(max_speed_x, vx)
+		grounded = false
+	
 	pos += velocity * dt
 
 func start_jumping():

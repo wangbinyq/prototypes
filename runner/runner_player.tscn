@@ -1,7 +1,12 @@
-[gd_scene load_steps=13 format=3 uid="uid://duqg3yn37oudm"]
+[gd_scene load_steps=14 format=3 uid="uid://duqg3yn37oudm"]
 
 [ext_resource type="Script" uid="uid://b8ig8hkoirjf4" path="res://runner/runner.gd" id="1_0y15v"]
 [ext_resource type="Shader" uid="uid://do4c0xg3hgqqx" path="res://paddle-square/bounce-particles.tres" id="2_8bhag"]
+
+[sub_resource type="Curve" id="Curve_0y15v"]
+_limits = [0.0, 2.0, 0.0, 1.0]
+_data = [Vector2(0, 2), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
 
 [sub_resource type="Gradient" id="Gradient_25h5n"]
 offsets = PackedFloat32Array(0, 0.106383, 1)
@@ -61,6 +66,7 @@ material = SubResource("StandardMaterial3D_rakw6")
 
 [node name="Runner" type="Node3D"]
 script = ExtResource("1_0y15v")
+run_acceleration_curve = SubResource("Curve_0y15v")
 
 [node name="Explosion Particle" type="GPUParticles3D" parent="."]
 emitting = false
