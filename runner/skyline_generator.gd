@@ -41,8 +41,5 @@ func start_new_game(view: TrackingCamera):
 
 	leftmost = get_instance()
 	rightmost = leftmost
-	print('x min', visible_x)
-	print('end_position', end_position)
 	end_position = rightmost.place_after(end_position)
-	print('end_position', end_position)
 	fill_view(view)
