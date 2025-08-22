@@ -82,4 +82,5 @@ omni_range = 10.0
 omni_attenuation = 2.0
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
+cast_shadow = 0
 mesh = SubResource("BoxMesh_rakw6")

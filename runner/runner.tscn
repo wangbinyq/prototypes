@@ -115,11 +115,13 @@ draw_pass_1 = SubResource("BoxMesh_j4rbn")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Scene"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+cast_shadow = 0
 mesh = SubResource("BoxMesh_7hwnl")
 skeleton = NodePath("../..")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="Scene"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3, 0)
+cast_shadow = 0
 mesh = SubResource("BoxMesh_7hwnl")
 skeleton = NodePath("../..")
 
