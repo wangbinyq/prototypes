@@ -30,6 +30,11 @@ func _process(delta: float) -> void:
 		start_new_game()
 
 func update_game(delta: float):
+	if Input.is_action_just_pressed("ui_accept"):
+		runner.start_jumping()
+	elif Input.is_action_just_released("ui_accept"):
+		runner.end_jumping()
+
 	var accumulated_dt = delta
 	while accumulated_dt > max_delta_time and is_playing:
 		is_playing = runner.run(max_delta_time)
