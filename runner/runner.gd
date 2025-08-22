@@ -30,7 +30,7 @@ func explode():
 	explosion.restart()
 
 func run(dt: float) -> bool:
-	if pos.x > 12:
+	if pos.x > 1e9:
 		explode()
 		return false
 	pos.x += start_speed_x * dt

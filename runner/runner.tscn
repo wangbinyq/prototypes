@@ -1,8 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://tupafqr6hooc"]
+[gd_scene load_steps=22 format=3 uid="uid://tupafqr6hooc"]
 
 [ext_resource type="Script" uid="uid://bh5xanuudaram" path="res://runner/runner_game.gd" id="1_j4rbn"]
 [ext_resource type="Script" uid="uid://do4q1hltxu1uj" path="res://runner/tracking_camera.gd" id="1_ljaxb"]
 [ext_resource type="PackedScene" uid="uid://duqg3yn37oudm" path="res://runner/runner_player.tscn" id="2_25h5n"]
+[ext_resource type="Script" uid="uid://dgn8mo2w4ppn3" path="res://runner/skyline_object.gd" id="4_j4rbn"]
+[ext_resource type="Script" uid="uid://duonkkwcf7kt6" path="res://runner/skyline_generator.gd" id="5_otjrf"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_rakw6"]
 sky_top_color = Color(0, 0, 0, 1)
@@ -21,12 +23,58 @@ glow_enabled = true
 glow_intensity = 0.5
 glow_blend_mode = 1
 
+[sub_resource type="Gradient" id="Gradient_ljaxb"]
+offsets = PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.988235, 0.92549, 0.592157, 1, 1, 1, 1, 1, 0.698039, 0.709804, 0.980392, 1, 1, 1, 1, 1, 0.941176, 0.564706, 0.552941, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_j4rbn"]
+gradient = SubResource("Gradient_ljaxb")
+use_hdr = true
+
+[sub_resource type="Gradient" id="Gradient_j4rbn"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(2, 2, 2, 1, 0, 0, 0, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_otjrf"]
+gradient = SubResource("Gradient_j4rbn")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ljaxb"]
+lifetime_randomness = 0.9
+emission_shape = 3
+emission_box_extents = Vector3(100, 100, 1)
+gravity = Vector3(0, 0, 0)
+scale_min = 0.1
+color = Color(2, 2, 2, 1)
+color_ramp = SubResource("GradientTexture1D_otjrf")
+color_initial_ramp = SubResource("GradientTexture1D_j4rbn")
+turbulence_noise_strength = 20.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ljaxb"]
+vertex_color_use_as_albedo = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_j4rbn"]
+material = SubResource("StandardMaterial3D_ljaxb")
+
 [sub_resource type="BoxMesh" id="BoxMesh_7hwnl"]
 size = Vector3(10, 1, 4)
 
 [sub_resource type="LabelSettings" id="LabelSettings_7hwnl"]
 font_size = 32
 font_color = Color(2, 2, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_otjrf"]
+albedo_color = Color(0.0962047, 0.0962048, 0.0962046, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ma048"]
+material = SubResource("StandardMaterial3D_otjrf")
+size = Vector3(10, 50, 4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ma048"]
+albedo_color = Color(0.227451, 0.227451, 0.227451, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_vmt3c"]
+material = SubResource("StandardMaterial3D_ma048")
+size = Vector3(10, 25, 4)
 
 [node name="RunnerGame" type="Node3D"]
 script = ExtResource("1_j4rbn")
@@ -43,6 +91,16 @@ sky_mode = 1
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 2, 40)
 fov = 30.0
 script = ExtResource("1_ljaxb")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -300)
+amount = 100
+lifetime = 10.0
+use_fixed_seed = true
+seed = 3787527665
+trail_lifetime = 10.0
+process_material = SubResource("ParticleProcessMaterial_ljaxb")
+draw_pass_1 = SubResource("BoxMesh_j4rbn")
 
 [node name="Runner" parent="." instance=ExtResource("2_25h5n")]
 
@@ -80,3 +138,42 @@ text = "PRESS SPACE"
 label_settings = SubResource("LabelSettings_7hwnl")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="SkylineObjects" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 92.5011)
+
+[node name="BaseSkylineObject" type="Node3D" parent="SkylineObjects"]
+script = ExtResource("4_j4rbn")
+extents = 5.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SkylineObjects/BaseSkylineObject"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -25, 0)
+mesh = SubResource("BoxMesh_ma048")
+skeleton = NodePath("../../..")
+
+[node name="MidSkylineObject" type="Node3D" parent="SkylineObjects"]
+script = ExtResource("4_j4rbn")
+extents = 5.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SkylineObjects/MidSkylineObject"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -12.5, 0)
+mesh = SubResource("BoxMesh_vmt3c")
+skeleton = NodePath("../../..")
+
+[node name="SkylineGenerators" type="Node3D" parent="."]
+
+[node name="Background" type="Node3D" parent="SkylineGenerators" node_paths=PackedStringArray("objects")]
+script = ExtResource("5_otjrf")
+objects = [NodePath("../../SkylineObjects/BaseSkylineObject")]
+distance = -80.0
+altitude_min = 5.0
+altitude_max = 15.0
+metadata/_custom_type_script = "uid://duonkkwcf7kt6"
+
+[node name="Midground" type="Node3D" parent="SkylineGenerators" node_paths=PackedStringArray("objects")]
+script = ExtResource("5_otjrf")
+objects = [NodePath("../../SkylineObjects/MidSkylineObject")]
+distance = -40.0
+altitude_min = -5.0
+altitude_max = 1.0
+metadata/_custom_type_script = "uid://duonkkwcf7kt6"

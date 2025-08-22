@@ -5,13 +5,20 @@ extends Node3D
 @onready var runner := $"Runner" as Runner
 @onready var tracking_camera := $Camera3D as TrackingCamera
 @onready var display_text := $UI/Label as Label
-
+var skyline_generators: Array[SkylineGenerator] = []
 
 var is_playing: bool
+
+func _ready() -> void:
+	for child in $SkylineGenerators.get_children():
+		if child is SkylineGenerator:
+			skyline_generators.append(child)
 
 func start_new_game():
 	tracking_camera.start_new_game()
 	runner.start_new_game()
+	for generator in skyline_generators:
+		generator.start_new_game(tracking_camera)
 	is_playing = true
 
 func _process(delta: float) -> void:
@@ -29,3 +36,6 @@ func update_game(delta: float):
 	runner.update_visualization()
 	tracking_camera.track(runner.position)
 	display_text.text = '%d' % floorf(runner.pos.x)
+
+	for generator in skyline_generators:
+		generator.fill_view(tracking_camera)
