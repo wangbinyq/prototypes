@@ -1,6 +1,8 @@
 class_name TrackingCamera
 extends Camera3D
 
+@export var y_curve: Curve
+
 @onready var offset := position
 var view_factor_x: float
 
@@ -14,6 +16,7 @@ func start_new_game():
 
 func track(focus_point: Vector3):
 	position = focus_point + offset
+	position.y = y_curve.sample(position.y)
 
 func visible_x(z: float):
 	return FloatRange.position_extents(position.x, view_factor_x * (position.z - z))

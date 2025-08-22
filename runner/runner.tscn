@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://tupafqr6hooc"]
+[gd_scene load_steps=27 format=3 uid="uid://tupafqr6hooc"]
 
 [ext_resource type="Script" uid="uid://bh5xanuudaram" path="res://runner/runner_game.gd" id="1_j4rbn"]
 [ext_resource type="Script" uid="uid://do4q1hltxu1uj" path="res://runner/tracking_camera.gd" id="1_ljaxb"]
@@ -22,6 +22,11 @@ tonemap_mode = 3
 glow_enabled = true
 glow_intensity = 0.5
 glow_blend_mode = 1
+
+[sub_resource type="Curve" id="Curve_otjrf"]
+_limits = [2.0, 7.0, 0.0, 7.0]
+_data = [Vector2(0, 2), 0.0, 0.0, 0, 0, Vector2(7, 7), 0.0, 0.0, 0, 0]
+point_count = 2
 
 [sub_resource type="Gradient" id="Gradient_ljaxb"]
 offsets = PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1)
@@ -104,6 +109,7 @@ sky_mode = 1
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 2, 40)
 fov = 30.0
 script = ExtResource("1_ljaxb")
+y_curve = SubResource("Curve_otjrf")
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -300)
