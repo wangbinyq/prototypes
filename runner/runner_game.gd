@@ -18,6 +18,7 @@ func _ready() -> void:
 			skyline_generators.append(child)
 
 func start_new_game():
+	$Scene.hide()
 	tracking_camera.start_new_game()
 	runner.start_new_game(obstacle_generator.start_new_game(tracking_camera))
 	tracking_camera.track(runner.position)

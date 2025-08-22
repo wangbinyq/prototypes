@@ -36,6 +36,7 @@ func get_instance() -> SkylineObject:
 func recycle() -> SkylineObject:
 	pool.push_back(self)
 	hide()
+	get_parent().remove_child(self)
 	var n = next;
 	next = null
 	return n
@@ -46,4 +47,6 @@ func fill_gap(pos: Vector3, gap: float):
 	position = pos
 
 func check(runner: Runner):
-	pass
+	for child in get_children():
+		if child.has_method('check'):
+			child.check(runner)

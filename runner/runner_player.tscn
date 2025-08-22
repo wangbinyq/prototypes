@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://duqg3yn37oudm"]
+[gd_scene load_steps=18 format=3 uid="uid://duqg3yn37oudm"]
 
 [ext_resource type="Script" uid="uid://b8ig8hkoirjf4" path="res://runner/runner.gd" id="1_0y15v"]
 [ext_resource type="Shader" uid="uid://do4c0xg3hgqqx" path="res://paddle-square/bounce-particles.tres" id="2_8bhag"]
@@ -12,14 +12,14 @@ point_count = 2
 offsets = PackedFloat32Array(0, 0.106383, 1)
 colors = PackedColorArray(1, 1, 0, 0, 1, 0.894, 0, 1, 1, 0, 0, 0)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_0diqx"]
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_0y15v"]
 gradient = SubResource("Gradient_25h5n")
 
 [sub_resource type="Curve" id="Curve_ljaxb"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 2
 
-[sub_resource type="CurveTexture" id="CurveTexture_0diqx"]
+[sub_resource type="CurveTexture" id="CurveTexture_8bhag"]
 curve = SubResource("Curve_ljaxb")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_j4rbn"]
@@ -32,16 +32,30 @@ initial_velocity_max = 4.0
 gravity = Vector3(0, 0, 0)
 scale_min = 0.5
 scale_max = 0.5
-scale_curve = SubResource("CurveTexture_0diqx")
-color_ramp = SubResource("GradientTexture1D_0diqx")
+scale_curve = SubResource("CurveTexture_8bhag")
+color_ramp = SubResource("GradientTexture1D_0y15v")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_0diqx"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o4k6s"]
 render_priority = 0
 shader = ExtResource("2_8bhag")
 shader_parameter/Intensity = 10.0
 
 [sub_resource type="BoxMesh" id="BoxMesh_otjrf"]
-material = SubResource("ShaderMaterial_0diqx")
+material = SubResource("ShaderMaterial_o4k6s")
+
+[sub_resource type="Gradient" id="Gradient_vmt3c"]
+offsets = PackedFloat32Array(0, 0.106383, 1)
+colors = PackedColorArray(1, 1, 0, 0, 1, 0.894, 0, 1, 1, 0, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_0diqx"]
+gradient = SubResource("Gradient_vmt3c")
+
+[sub_resource type="Curve" id="Curve_l05rq"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_0diqx"]
+curve = SubResource("Curve_l05rq")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_0y15v"]
 lifetime_randomness = 0.11
