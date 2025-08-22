@@ -11,13 +11,17 @@ config_version=5
 [application]
 
 config/name="Prototypes"
-run/main_scene="uid://tupafqr6hooc"
+run/main_scene="uid://blvqfw1m4ckce"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
 cell_state="*res://minecomb/cell_state.gd"
+
+[debug]
+
+gdscript/warnings/integer_division=0
 
 [rendering]
 

@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://do4q1hltxu1uj" path="res://runner/tracking_camera.gd" id="1_ljaxb"]
 [ext_resource type="PackedScene" uid="uid://duqg3yn37oudm" path="res://runner/runner_player.tscn" id="2_25h5n"]
 [ext_resource type="Script" uid="uid://dgn8mo2w4ppn3" path="res://runner/skyline_object.gd" id="4_j4rbn"]
-[ext_resource type="Script" uid="uid://6f6sbq0d2avl" path="res://runner/slowdown.gd" id="5_ma048"]
+[ext_resource type="Script" uid="uid://d4e2elnsbl7dt" path="res://runner/slowdown_object.gd" id="5_ma048"]
 [ext_resource type="Script" uid="uid://duonkkwcf7kt6" path="res://runner/skyline_generator.gd" id="5_otjrf"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_rakw6"]
@@ -262,7 +262,6 @@ skeleton = NodePath("../../..")
 script = ExtResource("5_ma048")
 item = NodePath("../MeshInstance3D2")
 explosion_particle = NodePath("../Explosion Particle")
-metadata/_custom_type_script = "uid://6f6sbq0d2avl"
 
 [node name="Explosion Particle" type="GPUParticles3D" parent="SkylineObjects/SlowDownObstacleSkylineObject"]
 emitting = false

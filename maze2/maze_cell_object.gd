@@ -1,0 +1,2 @@
+class_name MazeCellObject
+extends Node3D

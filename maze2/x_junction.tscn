@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://denpn71scck45"]
+
+[ext_resource type="ArrayMesh" uid="uid://dr50yysis513q" path="res://maze2/meshes/maze_x.res" id="1_r12yk"]
+[ext_resource type="Script" uid="uid://vlundhvurt42" path="res://maze2/maze_cell_object.gd" id="2_4besb"]
+
+[node name="MeshInstance3D" type="MeshInstance3D"]
+mesh = ExtResource("1_r12yk")
+script = ExtResource("2_4besb")
