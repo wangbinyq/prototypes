@@ -43,7 +43,7 @@ func update_game(delta: float):
 		is_playing = runner.run(max_delta_time)
 		accumulated_dt -= max_delta_time
 	is_playing = is_playing and runner.run(accumulated_dt)
-	runner.update_visualization()
+	runner.update_visualization(delta)
 	tracking_camera.track(runner.position)
 	display_text.text = '%d' % floorf(runner.pos.x)
 

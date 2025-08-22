@@ -11,6 +11,8 @@ extends Node3D
 @export var jump_duration_min := 0.1
 @export var jump_duration_max := 0.2
 
+@export var spin_duration := 0.75
+
 @onready var mesh := $Mesh as MeshInstance3D
 @onready var point_light = $OmniLight3D
 @onready var explosion := $"Explosion Particle" as GPUParticles3D
@@ -22,6 +24,8 @@ var current_obstacle: SkylineObject
 var grounded: bool
 var transitioning: bool
 var jump_time_remaining := 0.0
+var spin_time_remaining := 0.0
+var spin_rotation := Vector3.ZERO
 
 var speed_x: float:
 	get:
@@ -39,6 +43,7 @@ func start_new_game(obstacle: SkylineObject):
 	while current_obstacle.max_x < extents:
 		current_obstacle = current_obstacle.next
 	pos = Vector2(0, current_obstacle.gap_y.min + extents)
+	rotation = Vector3.ZERO
 	position = Vector3(pos.x, pos.y, 0)
 	mesh.show()
 	point_light.show()
@@ -46,6 +51,7 @@ func start_new_game(obstacle: SkylineObject):
 	transitioning = false
 	grounded = true
 	jump_time_remaining = 0
+	spin_time_remaining = 0
 	velocity = Vector2(start_speed_x, 0)
 
 func explode():
@@ -75,8 +81,11 @@ func run(dt: float) -> bool:
 			transitioning = false
 	return true
 
-func update_visualization():
+func update_visualization(dt: float):
 	position = Vector3(pos.x, pos.y, 0)
+	if spin_time_remaining > 0:
+		spin_time_remaining = maxf(spin_time_remaining - dt, 0)
+		rotation_degrees = lerp(spin_rotation, Vector3.ZERO, spin_time_remaining / spin_duration)
 
 func constrain_y(obstacle: SkylineObject):
 	var open_y = obstacle.gap_y
@@ -120,6 +129,11 @@ func move(dt: float):
 func start_jumping():
 	if grounded:
 		jump_time_remaining = jump_duration_max
+		if spin_time_remaining <= 0:
+			spin_time_remaining = spin_duration
+			spin_rotation = Vector3.ZERO
+			spin_rotation[randi_range(0, 2)] = -90 if randf() < 0.5 else 90
+			
 
 func end_jumping():
 	jump_time_remaining += jump_duration_min - jump_duration_max
