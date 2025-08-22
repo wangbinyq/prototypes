@@ -19,10 +19,6 @@ config/icon="res://icon.svg"
 
 cell_state="*res://minecomb/cell_state.gd"
 
-[debug]
+[filesystem]
 
-gdscript/warnings/integer_division=0
-
-[rendering]
-
-viewport/hdr_2d=true
+import/blender/enabled=false
