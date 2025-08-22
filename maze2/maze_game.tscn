@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://d4a7xj4ctnlju"]
+
+[ext_resource type="Script" uid="uid://dgpmrmegyq6kh" path="res://maze2/game.gd" id="1_3vuv3"]
+[ext_resource type="Script" uid="uid://drjinakky2n02" path="res://maze2/maze_visualization.gd" id="2_w8t6o"]
+[ext_resource type="PackedScene" uid="uid://denpn71scck45" path="res://maze2/x_junction.tscn" id="3_67bfe"]
+
+[node name="MazeGame" type="Node3D"]
+script = ExtResource("1_3vuv3")
+metadata/_custom_type_script = "uid://dgpmrmegyq6kh"
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 30, 0)
+
+[node name="MazeVisualization" type="Node3D" parent="."]
+script = ExtResource("2_w8t6o")
+x_junction = ExtResource("3_67bfe")
+metadata/_custom_type_script = "uid://drjinakky2n02"

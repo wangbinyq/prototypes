@@ -10,5 +10,5 @@ extends Node3D
 func visualize(maze: Maze):
 	for i in range(maze.length):
 		var instance = x_junction.instantiate()
-		instance.global_position = maze.index_to_world_position(i)
+		instance.position = maze.index_to_world_position(i)
 		add_child(instance)

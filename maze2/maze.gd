@@ -1,5 +1,5 @@
 class_name Maze
-extends Object
+extends Node
 
 var size: Vector2i
 var length: int:
