@@ -79,6 +79,19 @@ func find_available_passages(index: int) -> Array[Vector3i]:
 			scratchpad.append(Vector3i(i, MazeFlags.PassageS, MazeFlags.PassageN))
 	return scratchpad
 
+func find_closed_passages(index: int, exclude: int) -> Array[Vector3i]:
+	var coordinates = index_to_coordinates(index)
+	var scratchpad: Array[Vector3i] = []
+	if exclude != MazeFlags.PassageE and coordinates.x + 1 < size_ew:
+		scratchpad.append(Vector3i(step_e, MazeFlags.PassageE, MazeFlags.PassageW))
+	if exclude != MazeFlags.PassageW and coordinates.x > 0:
+		scratchpad.append(Vector3i(step_w, MazeFlags.PassageW, MazeFlags.PassageE))
+	if exclude != MazeFlags.PassageN and coordinates.y + 1 < size_ns:
+		scratchpad.append(Vector3i(step_n, MazeFlags.PassageN, MazeFlags.PassageS))
+	if exclude != MazeFlags.PassageS and coordinates.y > 0:
+		scratchpad.append(Vector3i(step_s, MazeFlags.PassageS, MazeFlags.PassageN))
+	return scratchpad
+
 func generate(pick_last_probability: float) -> void:
 	var active_indices = PackedInt32Array()
 	active_indices.resize(length)
@@ -106,3 +119,14 @@ func generate(pick_last_probability: float) -> void:
 			cells[passage.x] = passage.z
 			last_active_index += 1
 			active_indices[last_active_index] = passage.x
+
+func open_dead_ends(open_dead_end_probability: float) -> void:
+	if open_dead_end_probability <= 0:
+		return
+	for i in range(length):
+		var cell = cells[i]
+		if MazeFlags.has_exactly_one(cell) and randf() < open_dead_end_probability:
+			var scratchpad = find_closed_passages(i, cell)
+			var passage = scratchpad[randi_range(0, scratchpad.size() - 1)]
+			cells[i] = MazeFlags.with(cell, passage.y)
+			set_cell(i + passage.x, passage.z)
