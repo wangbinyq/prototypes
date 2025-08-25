@@ -26,3 +26,7 @@ func get_cell_instance(i: int) -> PackedScene:
 		return t_junction
 	else:
 		return x_junction
+
+func clear():
+	for child in get_children():
+		child.queue_free()

@@ -9,6 +9,7 @@ extends Node3D
 func _ready() -> void:
 	maze = Maze.new(maze_size)
 	maze.generate(pick_last_probability)
+	visualization.clear()
 	visualization.visualize(maze)
 
 func _on_reset_pressed() -> void:
