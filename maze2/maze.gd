@@ -86,11 +86,13 @@ func generate() -> void:
 	var last_active_index = 0
 	active_indices[first_active_index] = randi_range(0, length - 1)
 	while first_active_index <= last_active_index and last_active_index < length:
-		var index = active_indices[last_active_index]
+		var random_active_index = randi_range(first_active_index, last_active_index)
+		var index = active_indices[random_active_index]
 		var scratchpad = find_available_passages(index)
 		var available_passage_count = scratchpad.size()
 		if available_passage_count <= 1:
-			last_active_index -= 1
+			active_indices[random_active_index] = active_indices[first_active_index]
+			first_active_index += 1
 		if available_passage_count > 0:
 			var passage = scratchpad[randi_range(0, available_passage_count - 1)]
 			cells[index] = int(passage.z)

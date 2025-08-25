@@ -4,10 +4,10 @@
 [ext_resource type="Script" uid="uid://vlundhvurt42" path="res://maze2/maze_cell_object.gd" id="2_8tp57"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4besb"]
-shading_mode = 0
+cull_mode = 2
 albedo_color = Color(0.674814, 0.674815, 0.674815, 1)
 
-[node name="MeshInstance3D" type="MeshInstance3D"]
+[node name="MeshInstance3D2" type="MeshInstance3D"]
 mesh = ExtResource("1_2gplo")
 surface_material_override/0 = SubResource("StandardMaterial3D_4besb")
 script = ExtResource("2_8tp57")
