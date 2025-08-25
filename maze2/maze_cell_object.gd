@@ -4,3 +4,4 @@ extends MeshInstance3D
 func _ready() -> void:
 	var m = mesh.surface_get_material(0)
 	m.cull_mode = BaseMaterial3D.CULL_DISABLED
+	m.albedo_color = Color(0.5, 0.5, 0.5)
