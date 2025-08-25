@@ -74,6 +74,23 @@ _subresources={
 "save_to_file/enabled": true,
 "save_to_file/path": "res://maze2/meshes/maze_x.res"
 }
+},
+"nodes": {
+"PATH:corner": {
+"generate/physics": true
+},
+"PATH:deadend": {
+"generate/physics": true
+},
+"PATH:straight": {
+"generate/physics": true
+},
+"PATH:t": {
+"generate/physics": true
+},
+"PATH:x": {
+"generate/physics": true
+}
 }
 }
 blender/nodes/visible=0
