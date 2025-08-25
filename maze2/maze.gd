@@ -58,25 +58,25 @@ var step_w: int:
 	get:
 		return -1
 
-func find_available_passages(index: int) -> PackedVector3Array:
-	var scratchpad = PackedVector3Array()
+func find_available_passages(index: int) -> Array[Vector3i]:
+	var scratchpad: Array[Vector3i] = []
 	var coordinates = index_to_coordinates(index)
 	if coordinates.x + 1 < size_ew:
 		var i = index + step_e
 		if cells[i] == MazeFlags.Empty:
-			scratchpad.append(Vector3(i, MazeFlags.PassageE, MazeFlags.PassageW))
+			scratchpad.append(Vector3i(i, MazeFlags.PassageE, MazeFlags.PassageW))
 	if coordinates.x > 0:
 		var i = index + step_w
 		if cells[i] == MazeFlags.Empty:
-			scratchpad.append(Vector3(i, MazeFlags.PassageW, MazeFlags.PassageE))
+			scratchpad.append(Vector3i(i, MazeFlags.PassageW, MazeFlags.PassageE))
 	if coordinates.y + 1 < size_ns:
 		var i = index + step_n
 		if cells[i] == MazeFlags.Empty:
-			scratchpad.append(Vector3(i, MazeFlags.PassageN, MazeFlags.PassageS))
+			scratchpad.append(Vector3i(i, MazeFlags.PassageN, MazeFlags.PassageS))
 	if coordinates.y > 0:
 		var i = index + step_s
 		if cells[i] == MazeFlags.Empty:
-			scratchpad.append(Vector3(i, MazeFlags.PassageS, MazeFlags.PassageN))
+			scratchpad.append(Vector3i(i, MazeFlags.PassageS, MazeFlags.PassageN))
 	return scratchpad
 
 func generate(pick_last_probability: float) -> void:
@@ -102,7 +102,7 @@ func generate(pick_last_probability: float) -> void:
 			first_active_index += 1
 		if available_passage_count > 0:
 			var passage = scratchpad[randi_range(0, available_passage_count - 1)]
-			set_cell(index, int(passage.y))
-			cells[int(passage.x)] = int(passage.z)
-			active_indices[last_active_index + 1] = int(passage.x)
+			set_cell(index, passage.y)
+			cells[passage.x] = passage.z
 			last_active_index += 1
+			active_indices[last_active_index] = passage.x
