@@ -1,8 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://denpn71scck45"]
+[gd_scene load_steps=4 format=3 uid="uid://denpn71scck45"]
 
 [ext_resource type="ArrayMesh" uid="uid://dr50yysis513q" path="res://maze2/meshes/maze_x.res" id="1_r12yk"]
 [ext_resource type="Script" uid="uid://vlundhvurt42" path="res://maze2/maze_cell_object.gd" id="2_4besb"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4besb"]
+shading_mode = 0
+albedo_color = Color(0.674814, 0.674815, 0.674815, 1)
+
 [node name="MeshInstance3D" type="MeshInstance3D"]
 mesh = ExtResource("1_r12yk")
+surface_material_override/0 = SubResource("StandardMaterial3D_4besb")
 script = ExtResource("2_4besb")
