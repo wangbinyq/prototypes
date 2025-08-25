@@ -22,7 +22,7 @@ func coordinates_to_world_position(coordinates: Vector2i, y := 0.0) -> Vector3:
 	return Vector3(
 		2.0 * coordinates.x + 1 - size.x,
 		y,
-		(2.0 * coordinates.y + 1 - size.y)
+		- (2.0 * coordinates.y + 1 - size.y)
 	)
 
 func index_to_world_position(index: int, y := 0.0) -> Vector3:
@@ -95,7 +95,7 @@ func generate() -> void:
 			first_active_index += 1
 		if available_passage_count > 0:
 			var passage = scratchpad[randi_range(0, available_passage_count - 1)]
-			cells[index] = int(passage.z)
-			cells[int(passage.x)] = int(passage.y)
+			set_cell(index, int(passage.y))
+			cells[int(passage.x)] = int(passage.z)
 			active_indices[last_active_index + 1] = int(passage.x)
 			last_active_index += 1

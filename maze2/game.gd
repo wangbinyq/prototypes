@@ -3,8 +3,12 @@ extends Node3D
 
 @export var maze_size := Vector2i(20, 20)
 @onready var visualization := $MazeVisualization
-@onready var maze := Maze.new(maze_size)
+@onready var maze: Maze
 
 func _ready() -> void:
+	maze = Maze.new(maze_size)
 	maze.generate()
 	visualization.visualize(maze)
+
+func _on_reset_pressed() -> void:
+	_ready()

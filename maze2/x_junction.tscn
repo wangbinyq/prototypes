@@ -5,7 +5,7 @@
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4besb"]
 cull_mode = 2
-albedo_color = Color(0.674814, 0.674815, 0.674815, 1)
+albedo_color = Color(0.501407, 0.501406, 0.501406, 1)
 
 [node name="MeshInstance3D2" type="MeshInstance3D"]
 mesh = ExtResource("1_r12yk")

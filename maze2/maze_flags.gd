@@ -41,9 +41,9 @@ static func is_t_junction(f: int) -> bool:
 
 static func rotation(f: int) -> Vector3:
 	if f == PassageE or f == PassageE | PassageW or f == PassageE | PassageS or f == PassageAll & ~PassageN:
-		return Vector3(0, PI / 2, 0)
+		return Vector3(0, -PI * 0.5, 0)
 	elif f == PassageS or f == PassageS | PassageW or f == PassageAll & ~PassageE:
-		return Vector3(0, PI, 0)
+		return Vector3(0, -PI, 0)
 	elif f == PassageW or f == PassageW | PassageN or f == PassageAll & ~PassageS:
-		return Vector3(0, 3 * PI / 2, 0)
+		return Vector3(0, -PI * 1.5, 0)
 	return Vector3.ZERO
