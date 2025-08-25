@@ -79,15 +79,22 @@ func find_available_passages(index: int) -> PackedVector3Array:
 			scratchpad.append(Vector3(i, MazeFlags.PassageS, MazeFlags.PassageN))
 	return scratchpad
 
-func generate() -> void:
+func generate(pick_last_probability: float) -> void:
 	var active_indices = PackedInt32Array()
 	active_indices.resize(length)
 	var first_active_index = 0
 	var last_active_index = 0
 	active_indices[first_active_index] = randi_range(0, length - 1)
 	while first_active_index <= last_active_index and last_active_index < length:
-		var random_active_index = randi_range(first_active_index, last_active_index)
-		var index = active_indices[random_active_index]
+		var pick_last = randf() < pick_last_probability
+		var random_active_index: int
+		var index: int
+		if pick_last:
+			random_active_index = 0
+			index = active_indices[last_active_index]
+		else:
+			random_active_index = randi_range(first_active_index, last_active_index)
+			index = active_indices[random_active_index]
 		var scratchpad = find_available_passages(index)
 		var available_passage_count = scratchpad.size()
 		if available_passage_count <= 1:
