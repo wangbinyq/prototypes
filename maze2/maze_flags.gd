@@ -28,7 +28,7 @@ static func without(f: int, mask) -> int:
 	return f & ~mask
 
 static func is_dead_end(f: int) -> bool:
-	return f == PassageN or f == PassageS or f == PassageE or f == PassageW
+	return f == PassageN or f == PassageE or f == PassageS or f == PassageW
 
 static func is_straight(f: int) -> bool:
 	return f == PassageN | PassageS or f == PassageE | PassageW

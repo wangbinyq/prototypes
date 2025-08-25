@@ -79,6 +79,22 @@ func find_available_passages(index: int) -> Array[Vector3i]:
 			scratchpad.append(Vector3i(i, MazeFlags.PassageS, MazeFlags.PassageN))
 	return scratchpad
 
+func print_at(index: int):
+	var coord = index_to_coordinates(index)
+	var cell = cells[index]
+	var s = ''
+	if cell == MazeFlags.Empty:
+		s = 'Empty'
+	if MazeFlags.has(cell, MazeFlags.PassageN):
+		s += 'N'
+	if MazeFlags.has(cell, MazeFlags.PassageS):
+		s += 'S'
+	if MazeFlags.has(cell, MazeFlags.PassageE):
+		s += 'E'
+	if MazeFlags.has(cell, MazeFlags.PassageW):
+		s += 'W'
+	print('@(%d, %d): %s' % [coord.x, coord.y, s])
+
 func generate(pick_last_probability: float) -> void:
 	var active_indices = PackedInt32Array()
 	active_indices.resize(length)
@@ -102,7 +118,28 @@ func generate(pick_last_probability: float) -> void:
 			first_active_index += 1
 		if available_passage_count > 0:
 			var passage = scratchpad[randi_range(0, available_passage_count - 1)]
+			if index == 0 or passage.x == 0:
+				print('=== before === ')
+			if index == 0:
+				print_at(index)
+				print_at(passage.x)
+				print(passage)
+			if passage.x == 0:
+				print_at(index)
+				print_at(passage.x)
+				print(passage)
 			set_cell(index, passage.y)
 			cells[passage.x] = passage.z
 			last_active_index += 1
 			active_indices[last_active_index] = passage.x
+			if index == 0 or passage.x == 0:
+				print('=== after === ')
+			if index == 0:
+				print_at(index)
+				print_at(passage.x)
+				print(passage)
+			if passage.x == 0:
+				print_at(index)
+				print_at(passage.x)
+				print(passage)
+	print_at(0)
