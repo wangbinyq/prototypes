@@ -9,8 +9,9 @@ extends Node3D
 
 func visualize(maze: Maze):
 	for i in range(maze.length):
-		var instance = get_cell_instance(i % 16).instantiate() as MazeCellObject
-		instance.rotation = MazeFlags.rotation(i % 16)
+		var cell = maze.cells[i]
+		var instance = get_cell_instance(cell).instantiate() as MazeCellObject
+		instance.rotation = MazeFlags.rotation(cell)
 		instance.position = maze.index_to_world_position(i)
 		add_child(instance)
 

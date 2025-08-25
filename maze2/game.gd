@@ -6,4 +6,5 @@ extends Node3D
 @onready var maze := Maze.new(maze_size)
 
 func _ready() -> void:
+	maze.generate()
 	visualization.visualize(maze)
