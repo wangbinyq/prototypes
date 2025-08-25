@@ -15,6 +15,7 @@ height = 1.6
 
 [node name="MazeGame" type="Node3D"]
 script = ExtResource("1_3vuv3")
+open_arbitrary_probability = 0.25
 metadata/_custom_type_script = "uid://dgpmrmegyq6kh"
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]

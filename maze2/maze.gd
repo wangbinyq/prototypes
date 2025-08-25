@@ -130,3 +130,15 @@ func open_dead_ends(open_dead_end_probability: float) -> void:
 			var passage = scratchpad[randi_range(0, scratchpad.size() - 1)]
 			cells[i] = MazeFlags.with(cell, passage.y)
 			set_cell(i + passage.x, passage.z)
+
+func open_arbitrary_passages(open_arbitrary_probability: float) -> void:
+	if open_arbitrary_probability <= 0:
+		return
+	for i in range(length):
+		var coordinates = index_to_coordinates(i)
+		if coordinates.x > 0 and randf() < open_arbitrary_probability:
+			set_cell(i, MazeFlags.PassageW)
+			set_cell(i + step_w, MazeFlags.PassageE)
+		if coordinates.y > 0 and randf() < open_arbitrary_probability:
+			set_cell(i, MazeFlags.PassageS)
+			set_cell(i + step_s, MazeFlags.PassageN)
